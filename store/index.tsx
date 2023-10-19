@@ -1,12 +1,17 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import themeConfigSlice from './themeConfigSlice';
+import { apiSlice } from '@/redux/features/api/apiSlice';
 
+// Buat reducer baru dengan menggabungkan reducer-reducer dari kedua store
 const rootReducer = combineReducers({
-    themeConfig: themeConfigSlice,
+  themeConfig: themeConfigSlice,
+  [apiSlice.reducerPath]: apiSlice.reducer,
 });
 
-export default configureStore({
-    reducer: rootReducer,
+const store = configureStore({
+  reducer: rootReducer,
+  devTools: false,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
 });
 
-export type IRootState = ReturnType<typeof rootReducer>;
+export default store;

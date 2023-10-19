@@ -1,19 +1,29 @@
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 // import { useDispatch } from 'react-redux';
 // import { setPageTitle } from '../../store/themeConfigSlice';
-import { useCreateCourseMutation } from '@/redux/features/student/studentApi';
+import { useCreateCourseMutation, useEditCourseMutation, useGetAllCoursesQuery } from '@/redux/features/student/studentApi';
 import { useRouter } from 'next/router';
+import { redirect } from 'next/navigation';
 
-// ...
+type Props = {};
 
-const Add = () => {
+const Edit = ({ params }: any) => {
   const router = useRouter();
-  const [createCourse, { isLoading, isSuccess, error }] = useCreateCourseMutation();
+  const { id } = router.query;
+
+  const [editCourse, { isSuccess, error }] = useEditCourseMutation();
+
+  const { data, refetch } = useGetAllCoursesQuery({}, { refetchOnMountOrArgChange: true });
+
+  const stringNumber = id;
+  const numberId = Number(stringNumber);
+
+  const editCourseData = data && data.find((i: any) => i.id === numberId);
 
   useEffect(() => {
     if (isSuccess) {
       // toast.success("Course updated successfully");
-      router.push('/student/list');
+      redirect('/student/list');
     }
     if (error) {
       if ('data' in error) {
@@ -23,19 +33,27 @@ const Add = () => {
     }
   }, [isSuccess, error]);
 
+  useEffect(() => {
+    if (editCourseData) {
+      setItems({
+        nis: editCourseData.nis,
+        name: editCourseData.name,
+        email: editCourseData.email,
+      });
+    }
+  }, [editCourseData]);
+
   const [items, setItems] = useState({
     nis: '',
     name: '',
     email: '',
   });
-  console.log(items);
+  // console.log(items);
 
-  const addItem = async (e: any) => {
+  const editItem = async (e: any) => {
     e.preventDefault();
     const data = items;
-    if (!isLoading) {
-      await createCourse(data);
-    }
+    await editCourse({ id: editCourseData?.id, data });
   };
 
   // const removeItem = (item: any = null) => {
@@ -56,7 +74,7 @@ const Add = () => {
 
   return (
     <div className="flex flex-col gap-2.5 xl:flex-row">
-      <form onSubmit={addItem} action="">
+      <form onSubmit={editItem} action="">
         <div className="mt-6 w-full xl:mt-0 xl:w-96">
           <div className="panel mb-5">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -145,4 +163,4 @@ const Add = () => {
   );
 };
 
-export default Add;
+export default Edit;
