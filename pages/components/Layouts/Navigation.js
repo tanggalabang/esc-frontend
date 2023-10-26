@@ -11,19 +11,19 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 
 const Navigation = ({ user }) => {
-    const router = useRouter()
+  const router = useRouter()
 
-    const { logout } = useAuth()
+  const { logout } = useAuth()
 
-    const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false)
 
-    return (
-        <nav className="bg-white border-b border-gray-100">
-                            <button onClick={logout}>
-                                Logout
-                            </button>
-        </nav>
-    )
+  return (
+    <nav className="bg-white border-b border-gray-100">
+      <button onClick={logout}>
+        Logout
+      </button>
+    </nav>
+  )
 }
 
 export default Navigation
