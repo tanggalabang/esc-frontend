@@ -1,21 +1,148 @@
-import React from 'react';
+import { useRouter } from 'next/router';
+
+import { useDeletePicMutation, useUpdatePasswordMutation, useUpdateProfileMutation } from '@/redux/features/user/userApi';
+import { useAuth } from '../../pages/hooks/auth';
+import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import Swal from 'sweetalert2';
 
 type Props = {};
 
 const index = (props: Props) => {
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [updatePassword, { isSuccess, error }] = useUpdatePasswordMutation();
+  const [deletePic, { isSuccess: successDelete }] = useDeletePicMutation();
+
+  const router = useRouter();
+
+  const handleDelete = async (e: any) => {
+    e.preventDefault();
+    console.log('hallo');
+    const showAlert = async (type: number) => {
+      if (type === 10) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          showCancelButton: true,
+          confirmButtonText: 'Delete',
+          padding: '2em',
+          customClass: 'sweet-alerts',
+        }).then(async (result) => {
+          if (result.value) {
+            router.reload();
+            await deletePic(data);
+          }
+        });
+      }
+    };
+    showAlert(10);
+  };
+
+  const changePassword = async (e: any) => {
+    e.preventDefault();
+    if (newPassword !== confirmPassword) {
+      toast.error('Password do not match');
+    } else {
+      // updatePassword({ oldPassword, newPassword });
+      const showAlert = async (type: number) => {
+        if (type === 10) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            showCancelButton: true,
+            confirmButtonText: 'Delete',
+            padding: '2em',
+            customClass: 'sweet-alerts',
+          }).then((result) => {
+            if (result.value) {
+              updatePassword({ oldPassword, newPassword });
+            }
+          });
+        }
+      };
+      showAlert(10);
+    }
+  };
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success('Password changed successfully');
+      setOldPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+    }
+    if (error) {
+      if ('data' in error) {
+        const errorMessage = error as any;
+        toast.error(errorMessage.data.message);
+      }
+    }
+  }, [isSuccess, error]);
+
+  //update profile
+  const [updateProfile, { isSuccess: successUpdate }] = useUpdateProfileMutation();
+  useEffect(() => {
+    if (successUpdate) {
+      toast.success('Student add successfully');
+    }
+  }, [successUpdate]);
+  const { user } = useAuth();
+  useEffect(() => {
+    setData(user);
+  }, [user, successUpdate]);
+  const [data, setData] = useState({
+    name: '',
+    image: null as File | null, // Inisialisasi image dengan null
+  });
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setData({ ...data, name: e.target.value });
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setData({ ...data, image: e.target.files[0] });
+    }
+  };
+
+  const editItem = async (e: any) => {
+    const formData = new FormData();
+    formData.append('name', data.name);
+    if (data.image) {
+      formData.append('image', data.image);
+    }
+    await updateProfile(formData);
+  };
+
+  const [profileImage, setProfileImage] = useState('');
+
+  useEffect(() => {
+    if (user?.profile_pic != null) {
+      const fullImageUrl = `${process.env.NEXT_PUBLIC_URL}${user?.profile_pic}`;
+      setProfileImage(fullImageUrl);
+    } else {
+      const fullImageUrl = '/assets/images/profile-default.jpg';
+      setProfileImage(fullImageUrl);
+    }
+  }, [user]);
+
   return (
     <div className="mb-5 grid grid-cols-[1fr,3fr] gap-5">
       <div className="panel">
-        <div className="mb-5 flex items-center">
-          <h5 className="mr-auto text-lg font-semibold dark:text-white-light">My Profile</h5>
+        <div className="mb-5 flex w-full items-center">
+          <h5 className="mx-auto text-lg font-semibold dark:text-white-light">My Profile</h5>
         </div>
+        <br />
         <div className="mb-5">
           <div className="flex flex-col items-center justify-center">
-            <img src="/assets/images/profile-34.jpeg" alt="img" className="mb-5 h-24 w-24 rounded-full  object-cover" />
-            <p className="text-xl font-semibold text-primary">Jimmy Turner</p>
+            <img src={profileImage} alt="img" className="mb-5 h-24 w-24 rounded-full  object-cover" />
+            <p className="text-xl font-semibold text-primary">{user?.name}</p>
           </div>
-          <ul className="m-auto mt-5 flex max-w-[160px] flex-col space-y-4 font-semibold text-white-dark">
-            <li className="flex items-center gap-2">
+          <br />
+          <ul className="m-auto mt-5 flex max-w-[160px] flex-col items-center space-y-4 font-semibold text-white-dark">
+            {/* <li className="flex items-center gap-2">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5">
                 <path
                   d="M2.3153 12.6978C2.26536 12.2706 2.2404 12.057 2.2509 11.8809C2.30599 10.9577 2.98677 10.1928 3.89725 10.0309C4.07094 10 4.286 10 4.71612 10H15.2838C15.7139 10 15.929 10 16.1027 10.0309C17.0132 10.1928 17.694 10.9577 17.749 11.8809C17.7595 12.057 17.7346 12.2706 17.6846 12.6978L17.284 16.1258C17.1031 17.6729 16.2764 19.0714 15.0081 19.9757C14.0736 20.6419 12.9546 21 11.8069 21H8.19303C7.04537 21 5.9263 20.6419 4.99182 19.9757C3.72352 19.0714 2.89681 17.6729 2.71598 16.1258L2.3153 12.6978Z"
@@ -60,45 +187,40 @@ const index = (props: Props) => {
                 <path opacity="0.5" d="M2 9H22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
               Jan 20, 1989
-            </li>
+            </li> */}
             <li className="flex items-center gap-2">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path
                   opacity="0.5"
-                  d="M5 8.51464C5 4.9167 8.13401 2 12 2C15.866 2 19 4.9167 19 8.51464C19 12.0844 16.7658 16.2499 13.2801 17.7396C12.4675 18.0868 11.5325 18.0868 10.7199 17.7396C7.23416 16.2499 5 12.0844 5 8.51464Z"
+                  d="M3 10.4167C3 7.21907 3 5.62028 3.37752 5.08241C3.75503 4.54454 5.25832 4.02996 8.26491 3.00079L8.83772 2.80472C10.405 2.26824 11.1886 2 12 2C12.8114 2 13.595 2.26824 15.1623 2.80472L15.7351 3.00079C18.7417 4.02996 20.245 4.54454 20.6225 5.08241C21 5.62028 21 7.21907 21 10.4167C21 10.8996 21 11.4234 21 11.9914C21 17.6294 16.761 20.3655 14.1014 21.5273C13.38 21.8424 13.0193 22 12 22C10.9807 22 10.62 21.8424 9.89856 21.5273C7.23896 20.3655 3 17.6294 3 11.9914C3 11.4234 3 10.8996 3 10.4167Z"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                />
+                <circle cx="12" cy="9" r="2" stroke="currentColor" stroke-width="1.5" />
+                <path d="M16 15C16 16.1046 16 17 12 17C8 17 8 16.1046 8 15C8 13.8954 9.79086 13 12 13C14.2091 13 16 13.8954 16 15Z" stroke="currentColor" stroke-width="1.5" />
+              </svg>
+            </li>
+            <li className="rounded bg-success-light px-1 text-xs text-success ">{user?.user_type == 1 && <span>Admin</span>}</li>
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  opacity="0.5"
+                  d="M2 12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C22 6.34315 22 8.22876 22 12C22 15.7712 22 17.6569 20.8284 18.8284C19.6569 20 17.7712 20 14 20H10C6.22876 20 4.34315 20 3.17157 18.8284C2 17.6569 2 15.7712 2 12Z"
                   stroke="currentColor"
                   strokeWidth="1.5"
                 />
-                <path d="M14 9C14 10.1046 13.1046 11 12 11C10.8954 11 10 10.1046 10 9C10 7.89543 10.8954 7 12 7C13.1046 7 14 7.89543 14 9Z" stroke="currentColor" strokeWidth="1.5" />
                 <path
-                  d="M20.9605 15.5C21.6259 16.1025 22 16.7816 22 17.5C22 19.9853 17.5228 22 12 22C6.47715 22 2 19.9853 2 17.5C2 16.7816 2.37412 16.1025 3.03947 15.5"
+                  d="M6 8L8.1589 9.79908C9.99553 11.3296 10.9139 12.0949 12 12.0949C13.0861 12.0949 14.0045 11.3296 15.8411 9.79908L18 8"
                   stroke="currentColor"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                 />
               </svg>
-              New York, USA
             </li>
             <li>
-              <button className="flex items-center gap-2">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    opacity="0.5"
-                    d="M2 12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C22 6.34315 22 8.22876 22 12C22 15.7712 22 17.6569 20.8284 18.8284C19.6569 20 17.7712 20 14 20H10C6.22876 20 4.34315 20 3.17157 18.8284C2 17.6569 2 15.7712 2 12Z"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M6 8L8.1589 9.79908C9.99553 11.3296 10.9139 12.0949 12 12.0949C13.0861 12.0949 14.0045 11.3296 15.8411 9.79908L18 8"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
-                <span className="text-primary">Jimmy@gmail.com</span>
-              </button>
+              <span>{user?.email}</span>
             </li>
-            <li className="flex items-center gap-2">
+            {/* <li className="flex items-center gap-2">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M5.00659 6.93309C5.04956 5.7996 5.70084 4.77423 6.53785 3.93723C7.9308 2.54428 10.1532 2.73144 11.0376 4.31617L11.6866 5.4791C12.2723 6.52858 12.0372 7.90533 11.1147 8.8278M17.067 18.9934C18.2004 18.9505 19.2258 18.2992 20.0628 17.4622C21.4558 16.0692 21.2686 13.8468 19.6839 12.9624L18.5209 12.3134C17.4715 11.7277 16.0947 11.9628 15.1722 12.8853"
@@ -115,9 +237,9 @@ const index = (props: Props) => {
               <span className="whitespace-nowrap" dir="ltr">
                 +1 (530) 555-12121
               </span>
-            </li>
+            </li> */}
           </ul>
-          <ul className="mt-7 flex items-center justify-center gap-2">
+          {/* <ul className="mt-7 flex items-center justify-center gap-2">
             <li>
               <button className="btn btn-info flex h-10 w-10 items-center justify-center rounded-full p-0">
                 <svg
@@ -172,7 +294,7 @@ const index = (props: Props) => {
                 </svg>
               </button>
             </li>
-          </ul>
+          </ul> */}
         </div>
       </div>
       <div>
@@ -180,49 +302,68 @@ const index = (props: Props) => {
           <div className="mb-5 flex items-center">
             <h5 className="mr-auto text-lg font-semibold dark:text-white-light">Edit Profile</h5>
           </div>
-          <form className="space-y-5">
+          <form encType="multipart/form-data" className="space-y-5" onSubmit={editItem}>
             <div>
               <label htmlFor="groupFname" className="text-white-dark">
-                First Name
+                Name
               </label>
-              <input id="groupFname" type="text" placeholder="Enter First Name" className="form-input" />
+              {/* <input id="groupFname" type="text" placeholder="Enter First Name" className="form-input" /> */}
+              <input type="text" id="name" className="form-input" value={data?.name} onChange={handleNameChange} />
             </div>
             <div>
               <label htmlFor="ctnFile" className="text-white-dark">
-                Example file input
+                Profile Picture
               </label>
               <input
+                className="rtl:file-ml-5 form-input p-0 file:border-0 file:bg-primary/90 file:px-4 file:py-2 file:font-semibold file:text-white file:hover:bg-primary ltr:file:mr-5"
+                type="file"
+                id="image"
+                onChange={handleImageChange}
+              />
+
+              {/* <input
                 id="ctnFile"
                 type="file"
                 className="rtl:file-ml-5 form-input p-0 file:border-0 file:bg-primary/90 file:px-4 file:py-2 file:font-semibold file:text-white file:hover:bg-primary ltr:file:mr-5"
                 required
-              />
+              /> */}
             </div>
-            <button type="button" className="btn btn-primary !mt-6">
-              Submit
-            </button>
+            <div className="flex justify-between">
+              <button type="submit" className="btn btn-primary !mt-6">
+                Submit
+              </button>
+              <button onClick={handleDelete} className="btn btn-outline-danger !mt-6">
+                Delete Picture
+              </button>
+            </div>
           </form>
         </div>
         <div className="panel mt-6 ">
-          <form className="space-y-5">
+          <form className="space-y-5" onSubmit={changePassword}>
             <div className="mb-5 flex items-center">
               <h5 className="mr-auto text-lg font-semibold dark:text-white-light">Change Password</h5>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <div>
                 <label htmlFor="inputDefault" className="text-white-dark">
-                  Default Input
+                  Old Password
                 </label>
-                <input id="inputDefault" type="text" placeholder="Default Input" className="form-input" />
+                <input type="password" className="form-input" required value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} />
               </div>
               <div>
                 <label htmlFor="inputDefault" className="text-white-dark">
-                  Default Input
+                  New Password
                 </label>
-                <input id="inputDefault" type="text" placeholder="Default Input" className="form-input" />
+                <input type="password" className="form-input" required value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+              </div>
+              <div>
+                <label htmlFor="inputDefault" className="text-white-dark">
+                  Confirm Password
+                </label>
+                <input type="password" className="form-input" required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
               </div>
             </div>
-            <button type="button" className="btn btn-primary !mt-6">
+            <button type="submit" className="btn btn-primary !mt-6">
               Submit
             </button>
           </form>

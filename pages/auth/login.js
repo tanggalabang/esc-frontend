@@ -6,6 +6,7 @@ import { setPageTitle } from '../../store/themeConfigSlice';
 import BlankLayout from '@/components/Layouts/BlankLayout';
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast';
+import InputError from '@/components/InputError'
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -106,6 +107,7 @@ const Login = () => {
                     autoFocus
                     placeholder="Enter Email"
                   />
+                  <InputError messages={errors.email} className="mt-2" />
                 </div>
                 {/* Password */}
                 <div className="mt-4">
@@ -119,6 +121,10 @@ const Login = () => {
                     required
                     autoComplete="current-password"
                     placeholder="Enter Password"
+                  />
+                  <InputError
+                    messages={errors.password}
+                    className="mt-2"
                   />
                 </div>
                 {/* Remember Me */}

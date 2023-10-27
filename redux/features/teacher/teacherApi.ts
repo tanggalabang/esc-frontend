@@ -18,30 +18,30 @@ export const teacherApi = apiSlice.injectEndpoints({
         credentials: 'include' as const,
       }),
     }),
-    // editCourse: builder.mutation({
-    //   query: ({ id, data }) => ({
-    //     url: `students/${id}`,
-    //     method: 'PUT',
-    //     body: data,
-    //     credentials: 'include' as const,
-    //   }),
-    // }),
-    // deleteCourse: builder.mutation({
-    //   query: (id) => ({
-    //     url: `students/${id}`,
-    //     method: 'DELETE',
-    //     credentials: 'include' as const,
-    //   }),
-    // }),
-    // createExcelCourse: builder.mutation({
-    //   query: (data) => ({
-    //     url: 'student-excel',
-    //     method: 'POST',
-    //     body: data,
-    //     credentials: 'include' as const,
-    //   }),
-    // }),
+    editTeacher: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `teacher/${id}`,
+        method: 'PUT',
+        body: data,
+        credentials: 'include' as const,
+      }),
+    }),
+    deleteTeacher: builder.mutation({
+      query: (id) => ({
+        url: `teacher/${id}`,
+        method: 'DELETE',
+        credentials: 'include' as const,
+      }),
+    }),
+    createExcelTeacher: builder.mutation({
+      query: (data) => ({
+        url: 'teacher-excel',
+        method: 'POST',
+        body: data,
+        credentials: 'include' as const,
+      }),
+    }),
   }),
 });
 
-export const { useGetAllTeachersQuery, useCreateTeacherMutation } = teacherApi;
+export const { useCreateExcelTeacherMutation, useDeleteTeacherMutation, useGetAllTeachersQuery, useCreateTeacherMutation, useEditTeacherMutation } = teacherApi;

@@ -110,7 +110,7 @@ const DefaultLayout = ({ children }: PropsWithChildren) => {
           {/* BEGIN CONTENT AREA */}
           <div className="main-content">
             {/* BEGIN TOP NAVBAR */}
-            <Header />
+            <Header user={user} />
             {/* END TOP NAVBAR */}
             <div className={`${animation} animate__animated p-6`}>
               {children}

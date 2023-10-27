@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { setPageTitle } from '../../store/themeConfigSlice';
 import Link from 'next/link';
 import BlankLayout from '@/components/Layouts/BlankLayout';
+import InputError from '@/components/InputError'
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -86,7 +87,7 @@ const Register = () => {
                     autoFocus
                     placeholder='Enter Name'
                   />
-
+                  <InputError messages={errors.name} className="mt-2" />
                 </div>
 
                 {/* Email Address */}
@@ -101,7 +102,7 @@ const Register = () => {
                     required
                     placeholder='Enter Email'
                   />
-
+                  <InputError messages={errors.email} className="mt-2" />
                 </div>
 
                 {/* Password */}
@@ -117,7 +118,10 @@ const Register = () => {
                     autoComplete="new-password"
                     placeholder='Enter Password'
                   />
-
+                  <InputError
+                    messages={errors.password}
+                    className="mt-2"
+                  />
                 </div>
 
                 {/* Confirm Password */}
@@ -134,7 +138,10 @@ const Register = () => {
                     required
                     placeholder='Enter Confirmation Password'
                   />
-
+                  <InputError
+                    messages={errors.password_confirmation}
+                    className="mt-2"
+                  />
                 </div>
 
                 <div className="flex items-center justify-end mt-4">

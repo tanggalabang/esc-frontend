@@ -6,20 +6,76 @@ import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
 import { downloadExcel } from 'react-export-table-to-excel';
 import sortBy from 'lodash/sortBy';
+import { useGetAllClassQuery } from '@/redux/features/class-subject/classSubjectApi';
 
 const List = () => {
+  //REDUX
   const [courseId, setCourseId] = useState('');
   const { isLoading, data, refetch } = useGetAllCoursesQuery({}, { refetchOnMountOrArgChange: true });
   const [editCourse, { isSuccess }] = useEditCourseMutation();
   const [deleteCourse, { isSuccess: successDelete }] = useDeleteCourseMutation({});
   const [createExcel, { isLoading: loadingExcel, isSuccess: successExcel, error }] = useCreateExcelCourseMutation();
   const [createCourse, { isSuccess: successAdd, error: errorAdd }] = useCreateCourseMutation();
-
+  ///REDUX
+  //SHOW
+  const [items, setItems] = useState([]);
   useEffect(() => {
     if (data) {
       setItems(data);
     }
   }, [data]);
+
+  //--modal show
+  const [modalShow, setModalShow] = useState(false);
+  const [showId, setShowId] = useState();
+  const [itemsShow, setItemsShow] = useState({});
+  //--find data and show
+  const showData = data && data.find((i: any) => i.id === showId);
+
+  useEffect(() => {
+    if (showData) {
+      setItemsShow(showData);
+    }
+  }, [showData]);
+  //--handle show
+  const handleShow = (id: any) => {
+    setShowId(id);
+    setModalShow(true);
+  };
+  ///SHOW
+  //CREATE
+  //--basic
+  useEffect(() => {
+    refetch();
+    if (successAdd) {
+      toast.success('Student add successfully');
+      setItemsAdd({
+        nis: '',
+        name: '',
+        email: '',
+        class: '',
+      });
+    }
+  }, [successAdd]);
+  //----modal create
+  const [modalAdd, setModalAdd] = useState(false);
+
+  const [itemsAdd, setItemsAdd] = useState({
+    nis: '',
+    name: '',
+    email: '',
+    class: '',
+  });
+
+  //----handle add
+  const addItem = async (e: any) => {
+    e.preventDefault();
+    const data = itemsAdd;
+    await createCourse(data);
+    setModalAdd(false);
+  };
+
+  //--excel
   useEffect(() => {
     if (successExcel) {
       refetch();
@@ -29,53 +85,56 @@ const List = () => {
       refetch();
       if ('data' in error) {
         const errorMessage = error as any;
-        toast.error(errorMessage.data.message);
+        if (errorMessage.data.error == 'Trying to access array offset on value of type null') {
+          toast.error('Class does not found');
+        } else {
+          toast.error(errorMessage.data.error);
+        }
       }
     }
   }, [successExcel, error]);
+  //----import excel
+  const handleDownload = () => {
+    // Ganti URL ini sesuai dengan URL file Excel yang akan Anda unduh.
+    const excelUrl = process.env.NEXT_PUBLIC_SERVER_URI + 'template-excel';
+
+    // Inisiasi unduhan file Excel.
+    const link = document.createElement('a');
+    link.href = excelUrl;
+    link.download = 'example-excel.xlsx'; // Nama file Excel yang akan diunduh.
+    link.click();
+  };
+  const [modalExcel, setModalExcel] = useState(false);
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    setSelectedFile(file);
+  };
+
+  //----handle import excel
+  const handleUpload = async (e: any) => {
+    if (selectedFile) {
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+
+      await createExcel(formData);
+
+      setModalExcel(false);
+    }
+  };
+
+  ///CREATE
+  //EDIT
   useEffect(() => {
     if (isSuccess) {
       refetch();
       toast.success('Student updated successfully');
     }
   }, [isSuccess]);
-  useEffect(() => {
-    if (successDelete) {
-      refetch();
-    }
-  }, [successDelete]);
-  useEffect(() => {
-    refetch();
-    if (successAdd) {
-      toast.success('Student add successfully');
-      setItemsAdd({
-        nis: '',
-        name: '',
-        email: '',
-      });
-    }
-  }, [successAdd]);
-
-  //show
-  const [items, setItems] = useState([]);
-
-  //add
-  const [modalAdd, setModalAdd] = useState(false);
-
-  const [itemsAdd, setItemsAdd] = useState({
-    nis: '',
-    name: '',
-    email: '',
-  });
-
-  const addItem = async (e: any) => {
-    e.preventDefault();
-    const data = itemsAdd;
-    await createCourse(data);
-    setModalAdd(false);
-  };
-
-  //edit
+  //--find and show data for edit
   const editCourseData = data && data.find((i: any) => i.id === courseId);
 
   useEffect(() => {
@@ -88,12 +147,7 @@ const List = () => {
     }
   }, [editCourseData]);
 
-  const [itemsEdit, setItemsEdit] = useState({
-    nis: '',
-    name: '',
-    email: '',
-  });
-
+  //--modal edit
   const [modal1, setModal1] = useState(false);
 
   const modalEdit = (id: any) => {
@@ -101,14 +155,27 @@ const List = () => {
     setModal1(true);
   };
 
+  const [itemsEdit, setItemsEdit] = useState({
+    nis: '',
+    name: '',
+    email: '',
+  });
+
+  //--handle edit
   const editItem = async (e: any) => {
     e.preventDefault();
     const data = itemsEdit;
     await editCourse({ id: editCourseData?.id, data });
     setModal1(false);
   };
+  ///EDIT
+  //DELETE
+  useEffect(() => {
+    if (successDelete) {
+      refetch();
+    }
+  }, [successDelete]);
 
-  //delete
   const deleteRow = async (id: any) => {
     const showAlert = async (type: number) => {
       if (type === 10) {
@@ -131,39 +198,7 @@ const List = () => {
     showAlert(10);
   };
 
-  //import excel
-  const handleDownload = () => {
-    // Ganti URL ini sesuai dengan URL file Excel yang akan Anda unduh.
-    const excelUrl = process.env.NEXT_PUBLIC_SERVER_URI + 'template-excel';
-
-    // Inisiasi unduhan file Excel.
-    const link = document.createElement('a');
-    link.href = excelUrl;
-    link.download = 'example-excel.xlsx'; // Nama file Excel yang akan diunduh.
-    link.click();
-  };
-  const [modalExcel, setModalExcel] = useState(false);
-
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    setSelectedFile(file);
-  };
-
-  const handleUpload = async (e: any) => {
-    if (selectedFile) {
-      e.preventDefault();
-      const formData = new FormData();
-      formData.append('file', selectedFile);
-
-      await createExcel(formData);
-
-      setModalExcel(false);
-    }
-  };
-
-  //export
+  //EXPORT TO COUPLE FILE
   const col = ['nis', 'name', 'email'];
 
   const rowData = items;
@@ -289,34 +324,8 @@ const List = () => {
       },
     });
   }
-  //show
-  const handleShow = (id: any) => {
-    setShowId(id);
-    setModalShow(true);
-  };
-
-  const [modalShow, setModalShow] = useState(false);
-  const [showId, setShowId] = useState();
-  const [itemsShow, setItemsShow] = useState({
-    nis: '',
-    name: '',
-    email: '',
-  });
-
-  const showData = data && data.find((i: any) => i.id === showId);
-
-  useEffect(() => {
-    if (showData) {
-      setItemsShow({
-        nis: showData.nis,
-        name: showData.name,
-        email: showData.email,
-      });
-    }
-  }, [showData]);
-
-  //search
-
+  //EXPORT TO COUPLE FILE
+  //SEARCH
   const [page, setPage] = useState(1);
   const PAGE_SIZES = [10, 20, 30, 50, 100];
   const [search, setSearch] = useState('');
@@ -342,7 +351,7 @@ const List = () => {
   useEffect(() => {
     setInitialRecords(() => {
       return rowData?.filter((item: any) => {
-        return item.nis.toString().includes(search.toLowerCase()) || item.name.toLowerCase().includes(search.toLowerCase()) || item.email.toLowerCase().includes(search.toLowerCase());
+        return item.nis?.toString().includes(search.toLowerCase()) || item.name.toLowerCase().includes(search.toLowerCase()) || item.email.toLowerCase().includes(search.toLowerCase());
       });
     });
   }, [search]);
@@ -351,7 +360,21 @@ const List = () => {
     setInitialRecords(sortStatus.direction === 'desc' ? data.reverse() : data);
     setPage(1);
   }, [sortStatus]);
+  ///SEARCH
 
+  const { data: dataClass } = useGetAllClassQuery({});
+
+  const [profileImage, setProfileImage] = useState('');
+
+  useEffect(() => {
+    if (itemsShow?.profile_pic != null) {
+      const fullImageUrl = `${process.env.NEXT_PUBLIC_URL}${itemsShow?.profile_pic}`;
+      setProfileImage(fullImageUrl);
+    } else {
+      const fullImageUrl = '/assets/images/profile-default.jpg';
+      setProfileImage(fullImageUrl);
+    }
+  }, [itemsShow]);
   return (
     <>
       <div className="panel border-white-light px-0 dark:border-[#1b2e4b]">
@@ -467,11 +490,24 @@ const List = () => {
                     sortable: true,
                   },
                   {
+                    accessor: 'name',
+                    sortable: true,
+                    render: ({ name, profile_pic }) => (
+                      <div className="flex items-center font-semibold">
+                        <div className="w-max rounded-full bg-white-dark/30 p-0.5 ltr:mr-2 rtl:ml-2">
+                          {/* <img className="h-8 w-8 rounded-full object-cover" src={`${process.env.NEXT_PUBLIC_URL}${profile_pic}`} alt="" /> */}
+                          <img className="h-8 w-8 rounded-full object-cover" src={profile_pic ? `${process.env.NEXT_PUBLIC_URL}${profile_pic}` : '/assets/images/profile-default.jpg'} alt="" />
+                        </div>
+                        <div>{name}</div>
+                      </div>
+                    ),
+                  },
+                  {
                     accessor: 'email',
                     sortable: true,
                   },
                   {
-                    accessor: 'name',
+                    accessor: 'class',
                     sortable: true,
                   },
                   {
@@ -644,12 +680,27 @@ const List = () => {
                               </div>
                               <div className="mt-4">
                                 <label htmlFor="payment-method">Kelas</label>
-                                <select id="payment-method" name="payment-method" className="form-select">
+                                <select
+                                  required
+                                  className="form-select"
+                                  value={itemsAdd.class}
+                                  onChange={(
+                                    e: any //mengupdate perubahan secra realtime
+                                  ) => setItemsAdd({ ...itemsAdd, class: e.target.value })}
+                                >
+                                  <option value="">Select Class</option>
+                                  {dataClass?.map((item: any) => (
+                                    <option value={item.name} key={item.id}>
+                                      {item.name}
+                                    </option>
+                                  ))}
+                                </select>
+                                {/* <select id="payment-method" name="payment-method" className="form-select">
                                   <option value=" ">Select Payment</option>
                                   <option value="bank">Bank Account</option>
                                   <option value="paypal">Paypal</option>
                                   <option value="upi">UPI Transfer</option>
-                                </select>
+                                </select> */}
                               </div>
                               <div className="mt-8 flex items-center justify-end">
                                 <button type="button" className="btn btn-outline-danger" onClick={() => setModalAdd(false)}>
@@ -920,58 +971,51 @@ const List = () => {
                           </div>
                           <div className="mb-5 p-5">
                             <div className="flex flex-col items-center justify-center">
-                              <img src="/assets/images/profile-default.jpg" alt="img" className="mb-5 h-24 w-24 rounded-full  object-cover" />
+                              <img src={profileImage} alt="img" className="mb-5 h-24 w-24 rounded-full  object-cover" />
                               <p className="text-xl font-semibold text-primary">{itemsShow.name}</p>
                             </div>
                             <ul className="m-auto mt-5 flex max-w-[160px] flex-col items-center justify-center space-y-4 font-semibold text-white-dark">
-                              {/* <li className="flex items-center gap-2">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5">
-                                <path
-                                  d="M2.3153 12.6978C2.26536 12.2706 2.2404 12.057 2.2509 11.8809C2.30599 10.9577 2.98677 10.1928 3.89725 10.0309C4.07094 10 4.286 10 4.71612 10H15.2838C15.7139 10 15.929 10 16.1027 10.0309C17.0132 10.1928 17.694 10.9577 17.749 11.8809C17.7595 12.057 17.7346 12.2706 17.6846 12.6978L17.284 16.1258C17.1031 17.6729 16.2764 19.0714 15.0081 19.9757C14.0736 20.6419 12.9546 21 11.8069 21H8.19303C7.04537 21 5.9263 20.6419 4.99182 19.9757C3.72352 19.0714 2.89681 17.6729 2.71598 16.1258L2.3153 12.6978Z"
-                                  stroke="currentColor"
-                                  strokeWidth="1.5"
-                                />
-                                <path opacity="0.5" d="M17 17H19C20.6569 17 22 15.6569 22 14C22 12.3431 20.6569 11 19 11H17.5" stroke="currentColor" strokeWidth="1.5" />
-                                <path
-                                  opacity="0.5"
-                                  d="M10.0002 2C9.44787 2.55228 9.44787 3.44772 10.0002 4C10.5524 4.55228 10.5524 5.44772 10.0002 6"
-                                  stroke="currentColor"
-                                  strokeWidth="1.5"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M4.99994 7.5L5.11605 7.38388C5.62322 6.87671 5.68028 6.0738 5.24994 5.5C4.81959 4.9262 4.87665 4.12329 5.38382 3.61612L5.49994 3.5"
-                                  stroke="currentColor"
-                                  strokeWidth="1.5"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M14.4999 7.5L14.6161 7.38388C15.1232 6.87671 15.1803 6.0738 14.7499 5.5C14.3196 4.9262 14.3767 4.12329 14.8838 3.61612L14.9999 3.5"
-                                  stroke="currentColor"
-                                  strokeWidth="1.5"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>{' '}
-                              Web Developer
-                            </li>
-                            <li className="flex items-center gap-2">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5">
-                                <path
-                                  d="M2 12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C22 6.34315 22 8.22876 22 12V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V12Z"
-                                  stroke="currentColor"
-                                  strokeWidth="1.5"
-                                />
-                                <path opacity="0.5" d="M7 4V2.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                                <path opacity="0.5" d="M17 4V2.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                                <path opacity="0.5" d="M2 9H22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                              </svg>
-                              Jan 20, 1989
-                            </li> */}
                               <li className="flex items-center gap-2">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5">
+                                <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                  <path
+                                    fill-rule="evenodd"
+                                    clip-rule="evenodd"
+                                    d="M9 6.25C7.48122 6.25 6.25 7.48122 6.25 9C6.25 10.5188 7.48122 11.75 9 11.75C10.5188 11.75 11.75 10.5188 11.75 9C11.75 7.48122 10.5188 6.25 9 6.25ZM7.75 9C7.75 8.30965 8.30965 7.75 9 7.75C9.69036 7.75 10.25 8.30965 10.25 9C10.25 9.69036 9.69036 10.25 9 10.25C8.30965 10.25 7.75 9.69036 7.75 9Z"
+                                    fill="currentColor"
+                                    strokeWidth="1.5"
+                                  />
+                                  <path
+                                    fill-rule="evenodd"
+                                    clip-rule="evenodd"
+                                    d="M9 12.25C7.80424 12.25 6.68461 12.4907 5.83616 12.915C5.03258 13.3168 4.25 14.0106 4.25 15L4.24987 15.0625C4.24834 15.5728 4.24576 16.4322 5.06023 17.0218C5.43818 17.2953 5.9369 17.4698 6.55469 17.581C7.1782 17.6932 7.97721 17.75 9 17.75C10.0228 17.75 10.8218 17.6932 11.4453 17.581C12.0631 17.4698 12.5618 17.2953 12.9398 17.0218C13.7542 16.4322 13.7517 15.5728 13.7501 15.0625L13.75 15C13.75 14.0106 12.9674 13.3168 12.1638 12.915C11.3154 12.4907 10.1958 12.25 9 12.25ZM5.75 15C5.75 14.8848 5.86285 14.5787 6.50698 14.2566C7.10625 13.957 7.98662 13.75 9 13.75C10.0134 13.75 10.8937 13.957 11.493 14.2566C12.1371 14.5787 12.25 14.8848 12.25 15C12.25 15.6045 12.2115 15.6972 12.0602 15.8067C11.9382 15.895 11.6869 16.0134 11.1797 16.1047C10.6782 16.1949 9.97721 16.25 9 16.25C8.02279 16.25 7.3218 16.1949 6.82031 16.1047C6.31311 16.0134 6.06182 15.895 5.93977 15.8067C5.78849 15.6972 5.75 15.6045 5.75 15Z"
+                                    fill="currentColor"
+                                    strokeWidth="1.5"
+                                  />
+                                  <path
+                                    d="M19 12.75C19.4142 12.75 19.75 12.4142 19.75 12C19.75 11.5858 19.4142 11.25 19 11.25H15C14.5858 11.25 14.25 11.5858 14.25 12C14.25 12.4142 14.5858 12.75 15 12.75H19Z"
+                                    fill="currentColor"
+                                    strokeWidth="1.5"
+                                  />
+                                  <path
+                                    d="M19.75 9C19.75 9.41422 19.4142 9.75 19 9.75H14C13.5858 9.75 13.25 9.41422 13.25 9C13.25 8.58579 13.5858 8.25 14 8.25H19C19.4142 8.25 19.75 8.58579 19.75 9Z"
+                                    fill="currentColor"
+                                    strokeWidth="1.5"
+                                  />
+                                  <path
+                                    d="M19 15.75C19.4142 15.75 19.75 15.4142 19.75 15C19.75 14.5858 19.4142 14.25 19 14.25H16C15.5858 14.25 15.25 14.5858 15.25 15C15.25 15.4142 15.5858 15.75 16 15.75H19Z"
+                                    fill="currentColor"
+                                    strokeWidth="1.5"
+                                  />
+                                  <path
+                                    opacity="0.5"
+                                    fill-rule="evenodd"
+                                    clip-rule="evenodd"
+                                    d="M9.94358 3.25H14.0564C15.8942 3.24998 17.3498 3.24997 18.489 3.40314C19.6614 3.56076 20.6104 3.89288 21.3588 4.64124C22.1071 5.38961 22.4392 6.33856 22.5969 7.51098C22.75 8.65018 22.75 10.1058 22.75 11.9435V12.0564C22.75 13.8942 22.75 15.3498 22.5969 16.489C22.4392 17.6614 22.1071 18.6104 21.3588 19.3588C20.6104 20.1071 19.6614 20.4392 18.489 20.5969C17.3498 20.75 15.8942 20.75 14.0565 20.75H9.94359C8.10585 20.75 6.65018 20.75 5.51098 20.5969C4.33856 20.4392 3.38961 20.1071 2.64124 19.3588C1.89288 18.6104 1.56076 17.6614 1.40314 16.489C1.24997 15.3498 1.24998 13.8942 1.25 12.0564V11.9436C1.24998 10.1058 1.24997 8.65019 1.40314 7.51098C1.56076 6.33856 1.89288 5.38961 2.64124 4.64124C3.38961 3.89288 4.33856 3.56076 5.51098 3.40314C6.65019 3.24997 8.10583 3.24998 9.94358 3.25ZM5.71085 4.88976C4.70476 5.02503 4.12511 5.27869 3.7019 5.7019C3.27869 6.12511 3.02503 6.70476 2.88976 7.71085C2.75159 8.73851 2.75 10.0932 2.75 12C2.75 13.9068 2.75159 15.2615 2.88976 16.2892C3.02503 17.2952 3.27869 17.8749 3.7019 18.2981C4.12511 18.7213 4.70476 18.975 5.71085 19.1102C6.73851 19.2484 8.09318 19.25 10 19.25H14C15.9068 19.25 17.2615 19.2484 18.2892 19.1102C19.2952 18.975 19.8749 18.7213 20.2981 18.2981C20.7213 17.8749 20.975 17.2952 21.1102 16.2892C21.2484 15.2615 21.25 13.9068 21.25 12C21.25 10.0932 21.2484 8.73851 21.1102 7.71085C20.975 6.70476 20.7213 6.12511 20.2981 5.7019C19.8749 5.27869 19.2952 5.02503 18.2892 4.88976C17.2615 4.75159 15.9068 4.75 14 4.75H10C8.09318 4.75 6.73851 4.75159 5.71085 4.88976Z"
+                                    fill="currentColor"
+                                    strokeWidth="1.5"
+                                  />
+                                </svg>
+                                {/* <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5">
                                   <path
                                     opacity="0.5"
                                     d="M5 8.51464C5 4.9167 8.13401 2 12 2C15.866 2 19 4.9167 19 8.51464C19 12.0844 16.7658 16.2499 13.2801 17.7396C12.4675 18.0868 11.5325 18.0868 10.7199 17.7396C7.23416 16.2499 5 12.0844 5 8.51464Z"
@@ -985,7 +1029,7 @@ const List = () => {
                                     strokeWidth="1.5"
                                     strokeLinecap="round"
                                   />
-                                </svg>
+                                </svg> */}
                               </li>
                               <li>{itemsShow.nis}</li>
                               <li>
