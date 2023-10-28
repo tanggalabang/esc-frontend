@@ -19,13 +19,13 @@ export const userApi = apiSlice.injectEndpoints({
         credentials: 'include' as const,
       }),
     }),
-    // getAllTeachers: builder.query({
-    //   query: () => ({
-    //     url: 'teacher',
-    //     method: 'GET',
-    //     credentials: 'include' as const,
-    //   }),
-    // }),
+    getUserLogin: builder.query({
+      query: () => ({
+        url: 'user',
+        method: 'GET',
+        credentials: 'include' as const,
+      }),
+    }),
     deletePic: builder.mutation({
       query: (data) => ({
         url: 'delete-pic',
@@ -60,4 +60,4 @@ export const userApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useDeletePicMutation, useUpdatePasswordMutation, useUpdateProfileMutation } = userApi;
+export const { useGetUserLoginQuery, useDeletePicMutation, useUpdatePasswordMutation, useUpdateProfileMutation } = userApi;

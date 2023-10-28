@@ -59,7 +59,7 @@ const Sidebar = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
 
   const handleLogout = () => {
     const showAlert = async (type: number) => {
@@ -125,116 +125,133 @@ const Sidebar = () => {
                   </div>
                 </Link>
               </li>
-              <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
-                <svg className="hidden h-5 w-4 flex-none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                </svg>
-                <span>{t('master')}</span>
-              </h2>
-              <li className="menu nav-item">
-                <button type="button" className={`${currentMenu === 'users' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('users')}>
-                  <div className="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="group-hover:!text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                      <path d="M15.5 7.5C15.5 9.433 13.933 11 12 11C10.067 11 8.5 9.433 8.5 7.5C8.5 5.567 10.067 4 12 4C13.933 4 15.5 5.567 15.5 7.5Z" fill="currentColor" />
-                      <path
-                        opacity="0.5"
-                        d="M19.5 7.5C19.5 8.88071 18.3807 10 17 10C15.6193 10 14.5 8.88071 14.5 7.5C14.5 6.11929 15.6193 5 17 5C18.3807 5 19.5 6.11929 19.5 7.5Z"
-                        fill="currentColor"
-                      />
-                      <path opacity="0.5" d="M4.5 7.5C4.5 8.88071 5.61929 10 7 10C8.38071 10 9.5 8.88071 9.5 7.5C9.5 6.11929 8.38071 5 7 5C5.61929 5 4.5 6.11929 4.5 7.5Z" fill="currentColor" />
-                      <path d="M18 16.5C18 18.433 15.3137 20 12 20C8.68629 20 6 18.433 6 16.5C6 14.567 8.68629 13 12 13C15.3137 13 18 14.567 18 16.5Z" fill="currentColor" />
-                      <path opacity="0.5" d="M22 16.5C22 17.8807 20.2091 19 18 19C15.7909 19 14 17.8807 14 16.5C14 15.1193 15.7909 14 18 14C20.2091 14 22 15.1193 22 16.5Z" fill="currentColor" />
-                      <path opacity="0.5" d="M2 16.5C2 17.8807 3.79086 19 6 19C8.20914 19 10 17.8807 10 16.5C10 15.1193 8.20914 14 6 14C3.79086 14 2 15.1193 2 16.5Z" fill="currentColor" />
+              {/* admin only can access */}
+              {user && user.user_type === 1 && (
+                <>
+                  <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
+                    <svg className="hidden h-5 w-4 flex-none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
-                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('users')}</span>
-                  </div>
+                    <span>{t('master')}</span>
+                  </h2>
+                  <li className="menu nav-item">
+                    <button type="button" className={`${currentMenu === 'users' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('users')}>
+                      <div className="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="group-hover:!text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                          <path d="M15.5 7.5C15.5 9.433 13.933 11 12 11C10.067 11 8.5 9.433 8.5 7.5C8.5 5.567 10.067 4 12 4C13.933 4 15.5 5.567 15.5 7.5Z" fill="currentColor" />
+                          <path
+                            opacity="0.5"
+                            d="M19.5 7.5C19.5 8.88071 18.3807 10 17 10C15.6193 10 14.5 8.88071 14.5 7.5C14.5 6.11929 15.6193 5 17 5C18.3807 5 19.5 6.11929 19.5 7.5Z"
+                            fill="currentColor"
+                          />
+                          <path opacity="0.5" d="M4.5 7.5C4.5 8.88071 5.61929 10 7 10C8.38071 10 9.5 8.88071 9.5 7.5C9.5 6.11929 8.38071 5 7 5C5.61929 5 4.5 6.11929 4.5 7.5Z" fill="currentColor" />
+                          <path d="M18 16.5C18 18.433 15.3137 20 12 20C8.68629 20 6 18.433 6 16.5C6 14.567 8.68629 13 12 13C15.3137 13 18 14.567 18 16.5Z" fill="currentColor" />
+                          <path opacity="0.5" d="M22 16.5C22 17.8807 20.2091 19 18 19C15.7909 19 14 17.8807 14 16.5C14 15.1193 15.7909 14 18 14C20.2091 14 22 15.1193 22 16.5Z" fill="currentColor" />
+                          <path opacity="0.5" d="M2 16.5C2 17.8807 3.79086 19 6 19C8.20914 19 10 17.8807 10 16.5C10 15.1193 8.20914 14 6 14C3.79086 14 2 15.1193 2 16.5Z" fill="currentColor" />
+                        </svg>
+                        <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('users')}</span>
+                      </div>
 
-                  <div className={currentMenu === 'users' ? 'rotate-90' : 'rtl:rotate-180'}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M9 5L15 12L9 19" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </div>
-                </button>
+                      <div className={currentMenu === 'users' ? 'rotate-90' : 'rtl:rotate-180'}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M9 5L15 12L9 19" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </div>
+                    </button>
 
-                <AnimateHeight duration={300} height={currentMenu === 'users' ? 'auto' : 0}>
-                  <ul className="sub-menu text-gray-500">
-                    <li>
-                      <Link href="/teacher">{t('teacher')}</Link>
-                    </li>
-                    <li>
-                      <Link href="/student">{t('student')}</Link>
-                    </li>
-                  </ul>
-                </AnimateHeight>
-              </li>
-              <li className="nav-item">
-                <Link href="/class-subject" className="group">
-                  <div className="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="group-hover:!text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                      <path
-                        opacity="0.6"
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
-                        d="M3.46447 20.5355C4.92893 22 7.28595 22 12 22C16.714 22 19.0711 22 20.5355 20.5355C22 19.0711 22 16.714 22 12C22 11.3317 22 10.7107 21.9958 10.133C21.9938 9.85399 21.9928 9.71451 21.9394 9.49183C21.8861 9.26915 21.8562 9.2093 21.7964 9.08961C21.7932 9.08322 21.79 9.07686 21.7868 9.07053C21.3793 8.27084 20.7291 7.62067 19.9295 7.21321C19.518 7.00357 19.0103 6.87995 18.2229 6.81562C18.0734 6.8034 17.9161 6.79345 17.75 6.78536L16.25 6.75232V10.8076C16.25 11.3043 16.2497 11.6442 16.2351 11.8976C16.22 12.16 16.1923 12.2408 16.1854 12.2563C16.0383 12.5875 15.6753 12.7662 15.323 12.6807C15.3066 12.6767 15.2257 12.6493 15.0085 12.5012C14.7989 12.3582 14.5294 12.151 14.1358 11.848L14.0688 11.7963C13.6986 11.5109 13.4101 11.2885 13.0958 11.1519C12.3968 10.8483 11.6032 10.8483 10.9042 11.1519C10.5899 11.2885 10.3014 11.5109 9.9312 11.7963L9.86419 11.848C9.47062 12.151 9.20112 12.3582 8.99148 12.5012C8.77428 12.6493 8.69342 12.6767 8.67695 12.6807C8.32471 12.7662 7.96171 12.5875 7.81457 12.2563C7.80769 12.2408 7.78003 12.16 7.7649 11.8976C7.7503 11.6442 7.75 11.3043 7.75 10.8076V6.75232L6.25 6.78536C6.08387 6.79345 5.92663 6.8034 5.77708 6.81562C4.9897 6.87995 4.48197 7.00357 4.07054 7.21321C3.27085 7.62067 2.62068 8.27084 2.21322 9.07053C2.20999 9.07686 2.20679 9.08322 2.2036 9.0896C2.14382 9.2093 2.11393 9.26915 2.06056 9.49182C2.0072 9.7145 2.00619 9.85399 2.00417 10.133C2 10.7107 2 11.3317 2 12C2 16.714 2 19.0711 3.46447 20.5355Z"
-                        fill="currentColor"
-                      />
-                      <path
-                        d="M7.75 6.75244V10.8077C7.75 11.3044 7.7503 11.6443 7.7649 11.8977C7.78003 12.1602 7.80769 12.2409 7.81457 12.2564C7.96171 12.5877 8.32471 12.7663 8.67695 12.6808C8.69342 12.6768 8.77428 12.6494 8.99148 12.5013C9.20112 12.3583 9.47062 12.1512 9.86419 11.8481L9.9312 11.7965C10.3014 11.5111 10.5899 11.2886 10.9042 11.1521C11.6032 10.8484 12.3968 10.8484 13.0958 11.1521C13.4101 11.2886 13.6986 11.5111 14.0688 11.7965L14.1358 11.8481C14.5294 12.1512 14.7989 12.3583 15.0085 12.5013C15.2257 12.6494 15.3066 12.6768 15.323 12.6808C15.6753 12.7663 16.0383 12.5877 16.1854 12.2564C16.1923 12.2409 16.22 12.1602 16.2351 11.8977C16.2497 11.6443 16.25 11.3044 16.25 10.8077V6.75244H7.75Z"
-                        fill="currentColor"
-                      />
-                      <g opacity="0.4">
-                        <path
-                          d="M20.5351 3.46447C19.0706 2 16.7136 2 11.9996 2C7.28551 2 4.92849 2 3.46402 3.46447C2.6948 4.23369 2.32962 5.24918 2.15625 6.72315L2.03715 9.60194C2.04355 9.56702 2.05126 9.53074 2.06056 9.49195C2.11393 9.26927 2.14382 9.20942 2.2036 9.08973L2.21322 9.07065C2.62068 8.27096 3.27085 7.62079 4.07054 7.21333C4.48197 7.0037 4.9897 6.88007 5.77708 6.81574C5.92663 6.80352 6.08387 6.79358 6.25 6.78548L7.75 6.75244V10.5H16.25V6.75244L17.75 6.78548C17.9161 6.79358 18.0734 6.80352 18.2229 6.81574C19.0103 6.88007 19.518 7.0037 19.9295 7.21333C20.7291 7.62079 21.3793 8.27096 21.7868 9.07065L21.7964 9.08973C21.814 9.12503 21.8291 9.15513 21.8429 9.18573V6.72315C21.6695 5.24918 21.3043 4.23369 20.5351 3.46447Z"
-                          fill="currentColor"
-                        />
-                        <path d="M2.00207 10.5C2.00215 10.4812 2.00224 10.4625 2.00233 10.4437L2 10.5H2.00207Z" fill="#1C274D" />
-                      </g>
+                    <AnimateHeight duration={300} height={currentMenu === 'users' ? 'auto' : 0}>
+                      <ul className="sub-menu text-gray-500">
+                        <li>
+                          <Link href="/admin/teacher">{t('teacher')}</Link>
+                        </li>
+                        <li>
+                          <Link href="/admin/student">{t('student')}</Link>
+                        </li>
+                      </ul>
+                    </AnimateHeight>
+                  </li>
+                  <li className="nav-item">
+                    <Link href="/admin/class-subject" className="group">
+                      <div className="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="group-hover:!text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                          <path
+                            opacity="0.6"
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M3.46447 20.5355C4.92893 22 7.28595 22 12 22C16.714 22 19.0711 22 20.5355 20.5355C22 19.0711 22 16.714 22 12C22 11.3317 22 10.7107 21.9958 10.133C21.9938 9.85399 21.9928 9.71451 21.9394 9.49183C21.8861 9.26915 21.8562 9.2093 21.7964 9.08961C21.7932 9.08322 21.79 9.07686 21.7868 9.07053C21.3793 8.27084 20.7291 7.62067 19.9295 7.21321C19.518 7.00357 19.0103 6.87995 18.2229 6.81562C18.0734 6.8034 17.9161 6.79345 17.75 6.78536L16.25 6.75232V10.8076C16.25 11.3043 16.2497 11.6442 16.2351 11.8976C16.22 12.16 16.1923 12.2408 16.1854 12.2563C16.0383 12.5875 15.6753 12.7662 15.323 12.6807C15.3066 12.6767 15.2257 12.6493 15.0085 12.5012C14.7989 12.3582 14.5294 12.151 14.1358 11.848L14.0688 11.7963C13.6986 11.5109 13.4101 11.2885 13.0958 11.1519C12.3968 10.8483 11.6032 10.8483 10.9042 11.1519C10.5899 11.2885 10.3014 11.5109 9.9312 11.7963L9.86419 11.848C9.47062 12.151 9.20112 12.3582 8.99148 12.5012C8.77428 12.6493 8.69342 12.6767 8.67695 12.6807C8.32471 12.7662 7.96171 12.5875 7.81457 12.2563C7.80769 12.2408 7.78003 12.16 7.7649 11.8976C7.7503 11.6442 7.75 11.3043 7.75 10.8076V6.75232L6.25 6.78536C6.08387 6.79345 5.92663 6.8034 5.77708 6.81562C4.9897 6.87995 4.48197 7.00357 4.07054 7.21321C3.27085 7.62067 2.62068 8.27084 2.21322 9.07053C2.20999 9.07686 2.20679 9.08322 2.2036 9.0896C2.14382 9.2093 2.11393 9.26915 2.06056 9.49182C2.0072 9.7145 2.00619 9.85399 2.00417 10.133C2 10.7107 2 11.3317 2 12C2 16.714 2 19.0711 3.46447 20.5355Z"
+                            fill="currentColor"
+                          />
+                          <path
+                            d="M7.75 6.75244V10.8077C7.75 11.3044 7.7503 11.6443 7.7649 11.8977C7.78003 12.1602 7.80769 12.2409 7.81457 12.2564C7.96171 12.5877 8.32471 12.7663 8.67695 12.6808C8.69342 12.6768 8.77428 12.6494 8.99148 12.5013C9.20112 12.3583 9.47062 12.1512 9.86419 11.8481L9.9312 11.7965C10.3014 11.5111 10.5899 11.2886 10.9042 11.1521C11.6032 10.8484 12.3968 10.8484 13.0958 11.1521C13.4101 11.2886 13.6986 11.5111 14.0688 11.7965L14.1358 11.8481C14.5294 12.1512 14.7989 12.3583 15.0085 12.5013C15.2257 12.6494 15.3066 12.6768 15.323 12.6808C15.6753 12.7663 16.0383 12.5877 16.1854 12.2564C16.1923 12.2409 16.22 12.1602 16.2351 11.8977C16.2497 11.6443 16.25 11.3044 16.25 10.8077V6.75244H7.75Z"
+                            fill="currentColor"
+                          />
+                          <g opacity="0.4">
+                            <path
+                              d="M20.5351 3.46447C19.0706 2 16.7136 2 11.9996 2C7.28551 2 4.92849 2 3.46402 3.46447C2.6948 4.23369 2.32962 5.24918 2.15625 6.72315L2.03715 9.60194C2.04355 9.56702 2.05126 9.53074 2.06056 9.49195C2.11393 9.26927 2.14382 9.20942 2.2036 9.08973L2.21322 9.07065C2.62068 8.27096 3.27085 7.62079 4.07054 7.21333C4.48197 7.0037 4.9897 6.88007 5.77708 6.81574C5.92663 6.80352 6.08387 6.79358 6.25 6.78548L7.75 6.75244V10.5H16.25V6.75244L17.75 6.78548C17.9161 6.79358 18.0734 6.80352 18.2229 6.81574C19.0103 6.88007 19.518 7.0037 19.9295 7.21333C20.7291 7.62079 21.3793 8.27096 21.7868 9.07065L21.7964 9.08973C21.814 9.12503 21.8291 9.15513 21.8429 9.18573V6.72315C21.6695 5.24918 21.3043 4.23369 20.5351 3.46447Z"
+                              fill="currentColor"
+                            />
+                            <path d="M2.00207 10.5C2.00215 10.4812 2.00224 10.4625 2.00233 10.4437L2 10.5H2.00207Z" fill="#1C274D" />
+                          </g>
+                        </svg>
+                        <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('Class and Subject')}</span>
+                      </div>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link href="/admin/times-table" className="group">
+                      <div className="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="group-hover:!text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                          <path
+                            d="M6.94028 2C7.35614 2 7.69326 2.32421 7.69326 2.72414V4.18487C8.36117 4.17241 9.10983 4.17241 9.95219 4.17241H13.9681C14.8104 4.17241 15.5591 4.17241 16.227 4.18487V2.72414C16.227 2.32421 16.5641 2 16.98 2C17.3958 2 17.733 2.32421 17.733 2.72414V4.24894C19.178 4.36022 20.1267 4.63333 20.8236 5.30359C21.5206 5.97385 21.8046 6.88616 21.9203 8.27586L22 9H2.92456H2V8.27586C2.11571 6.88616 2.3997 5.97385 3.09665 5.30359C3.79361 4.63333 4.74226 4.36022 6.1873 4.24894V2.72414C6.1873 2.32421 6.52442 2 6.94028 2Z"
+                            fill="currentColor"
+                          />
+                          <path
+                            opacity="0.5"
+                            d="M21.9995 14.0001V12.0001C21.9995 11.161 21.9963 9.66527 21.9834 9H2.00917C1.99626 9.66527 1.99953 11.161 1.99953 12.0001V14.0001C1.99953 17.7713 1.99953 19.6569 3.1711 20.8285C4.34267 22.0001 6.22829 22.0001 9.99953 22.0001H13.9995C17.7708 22.0001 19.6564 22.0001 20.828 20.8285C21.9995 19.6569 21.9995 17.7713 21.9995 14.0001Z"
+                            fill="currentColor"
+                          />
+                          <path d="M18 17C18 17.5523 17.5523 18 17 18C16.4477 18 16 17.5523 16 17C16 16.4477 16.4477 16 17 16C17.5523 16 18 16.4477 18 17Z" fill="#1C274C" />
+                          <path d="M18 13C18 13.5523 17.5523 14 17 14C16.4477 14 16 13.5523 16 13C16 12.4477 16.4477 12 17 12C17.5523 12 18 12.4477 18 13Z" fill="#1C274C" />
+                          <path d="M13 17C13 17.5523 12.5523 18 12 18C11.4477 18 11 17.5523 11 17C11 16.4477 11.4477 16 12 16C12.5523 16 13 16.4477 13 17Z" fill="#1C274C" />
+                          <path d="M13 13C13 13.5523 12.5523 14 12 14C11.4477 14 11 13.5523 11 13C11 12.4477 11.4477 12 12 12C12.5523 12 13 12.4477 13 13Z" fill="#1C274C" />
+                          <path d="M8 17C8 17.5523 7.55228 18 7 18C6.44772 18 6 17.5523 6 17C6 16.4477 6.44772 16 7 16C7.55228 16 8 16.4477 8 17Z" fill="#1C274C" />
+                          <path d="M8 13C8 13.5523 7.55228 14 7 14C6.44772 14 6 13.5523 6 13C6 12.4477 6.44772 12 7 12C7.55228 12 8 12.4477 8 13Z" fill="#1C274C" />
+                        </svg>
+                        <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('Times Table')}</span>
+                      </div>
+                    </Link>
+                  </li>
+                  <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
+                    <svg className="hidden h-5 w-4 flex-none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
-                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('Class and Subject')}</span>
-                  </div>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link href="/times-table" className="group">
-                  <div className="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="group-hover:!text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                      <path
-                        d="M6.94028 2C7.35614 2 7.69326 2.32421 7.69326 2.72414V4.18487C8.36117 4.17241 9.10983 4.17241 9.95219 4.17241H13.9681C14.8104 4.17241 15.5591 4.17241 16.227 4.18487V2.72414C16.227 2.32421 16.5641 2 16.98 2C17.3958 2 17.733 2.32421 17.733 2.72414V4.24894C19.178 4.36022 20.1267 4.63333 20.8236 5.30359C21.5206 5.97385 21.8046 6.88616 21.9203 8.27586L22 9H2.92456H2V8.27586C2.11571 6.88616 2.3997 5.97385 3.09665 5.30359C3.79361 4.63333 4.74226 4.36022 6.1873 4.24894V2.72414C6.1873 2.32421 6.52442 2 6.94028 2Z"
-                        fill="currentColor"
-                      />
-                      <path
-                        opacity="0.5"
-                        d="M21.9995 14.0001V12.0001C21.9995 11.161 21.9963 9.66527 21.9834 9H2.00917C1.99626 9.66527 1.99953 11.161 1.99953 12.0001V14.0001C1.99953 17.7713 1.99953 19.6569 3.1711 20.8285C4.34267 22.0001 6.22829 22.0001 9.99953 22.0001H13.9995C17.7708 22.0001 19.6564 22.0001 20.828 20.8285C21.9995 19.6569 21.9995 17.7713 21.9995 14.0001Z"
-                        fill="currentColor"
-                      />
-                      <path d="M18 17C18 17.5523 17.5523 18 17 18C16.4477 18 16 17.5523 16 17C16 16.4477 16.4477 16 17 16C17.5523 16 18 16.4477 18 17Z" fill="#1C274C" />
-                      <path d="M18 13C18 13.5523 17.5523 14 17 14C16.4477 14 16 13.5523 16 13C16 12.4477 16.4477 12 17 12C17.5523 12 18 12.4477 18 13Z" fill="#1C274C" />
-                      <path d="M13 17C13 17.5523 12.5523 18 12 18C11.4477 18 11 17.5523 11 17C11 16.4477 11.4477 16 12 16C12.5523 16 13 16.4477 13 17Z" fill="#1C274C" />
-                      <path d="M13 13C13 13.5523 12.5523 14 12 14C11.4477 14 11 13.5523 11 13C11 12.4477 11.4477 12 12 12C12.5523 12 13 12.4477 13 13Z" fill="#1C274C" />
-                      <path d="M8 17C8 17.5523 7.55228 18 7 18C6.44772 18 6 17.5523 6 17C6 16.4477 6.44772 16 7 16C7.55228 16 8 16.4477 8 17Z" fill="#1C274C" />
-                      <path d="M8 13C8 13.5523 7.55228 14 7 14C6.44772 14 6 13.5523 6 13C6 12.4477 6.44772 12 7 12C7.55228 12 8 12.4477 8 13Z" fill="#1C274C" />
-                    </svg>
-                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('Times Table')}</span>
-                  </div>
-                </Link>
-              </li>
-              <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
-                <svg className="hidden h-5 w-4 flex-none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                </svg>
-                <span>{t('User Menu')}</span>
-              </h2>
-              <li className="nav-item">
-                <Link href="/profile" className="group">
-                  <div className="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="group-hover:!text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                      <circle cx="12" cy="6" r="4" fill="currentColor" />
-                      <path opacity="0.5" d="M20 17.5C20 19.9853 20 22 12 22C4 22 4 19.9853 4 17.5C4 15.0147 7.58172 13 12 13C16.4183 13 20 15.0147 20 17.5Z" fill="#1C274C" />
-                    </svg>
-                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('Profile')}</span>
-                  </div>
-                </Link>
-              </li>
+                    <span>{t('User Menu')}</span>
+                  </h2>
+                  <li className="nav-item">
+                    <Link href="/admin/profile" className="group">
+                      <div className="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="group-hover:!text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                          <circle cx="12" cy="6" r="4" fill="currentColor" />
+                          <path opacity="0.5" d="M20 17.5C20 19.9853 20 22 12 22C4 22 4 19.9853 4 17.5C4 15.0147 7.58172 13 12 13C16.4183 13 20 15.0147 20 17.5Z" fill="#1C274C" />
+                        </svg>
+                        <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('Profile')}</span>
+                      </div>
+                    </Link>
+                  </li>
+                </>
+              )}
+              {/* teacher only can access */}
+              {user && user.user_type === 2 && (
+                <>
+                  <span>teacher</span>
+                </>
+              )}
+              {/* student only can access */}
+              {user && user.user_type === 3 && (
+                <>
+                  <span>student</span>
+                </>
+              )}
               <li className="nav-item">
                 <button onClick={handleLogout} className="group">
                   <div className="flex items-center">
