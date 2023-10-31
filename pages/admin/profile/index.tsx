@@ -160,7 +160,7 @@ const index = (props: Props) => {
           <div className="mb-5">
             <div className="flex flex-col items-center justify-center">
               <img src={profileImage} alt="img" className="mb-5 h-24 w-24 rounded-full  object-cover" />
-              <p className="text-xl font-semibold text-primary">{user?.name}</p>
+              <p className="text-center text-xl font-semibold text-primary">{user?.name}</p>
             </div>
             <br />
             <ul className="m-auto mt-5 flex max-w-[160px] flex-col items-center space-y-4 font-semibold text-white-dark">

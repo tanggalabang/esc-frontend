@@ -19,6 +19,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/apps/todolist.tsx", "pages/auth/reset-password.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/apps/todolist.tsx", "pages/auth/reset-password.js", "components/CKeditor.tsx, "pages/test2/index.jsx", "pages/test2/index.js"", "pages/test/index.js"],
   "exclude": ["node_modules"]
 }
