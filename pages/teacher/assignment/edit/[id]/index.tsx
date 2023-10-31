@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useGetAllClassQuery, useGetAllSubjectQuery } from '@/redux/features/class-subject/classSubjectApi';
-import { useCreateAssignmentMutation } from '@/redux/features/assignment/assignmentApi';
+import { useCreateAssignmentMutation, useEditAssignmentMutation, useEditFilesMutation, useGetAllAssignmentQuery, useGetAllFilesQuery } from '@/redux/features/assignment/assignmentApi';
 
 import React from 'react';
 import { useCreateFilesMutation } from '@/redux/features/assignment/assignmentApi';
@@ -18,7 +18,36 @@ const useReff = (initialValue: any) => {
   return useRef(initialValue);
 };
 
-const Add = () => {
+const Edit = () => {
+  //--get id from url
+  const router = useRouter();
+  const { id } = router.query;
+
+  //--get assignment by id url
+  const { isLoading, data, refetch } = useGetAllAssignmentQuery({}, { refetchOnMountOrArgChange: true });
+
+  const showData = data && data.find((i: any) => i.uid === id);
+
+  //--get file assignment by id url
+  const { isLoading: loadingFile, data: dataFile, refetch: refetchFile } = useGetAllFilesQuery({}, { refetchOnMountOrArgChange: true });
+
+  const assUidToFilter = id;
+  const showDataFile = dataFile?.filter((item: any) => item.ass_uid === assUidToFilter);
+
+  //--use data to itemsAssignment
+  useEffect(() => {
+    if (showData) {
+      setItemsAssignment({
+        uid: showData.uid,
+        name: showData.name,
+        class: showData.class_name,
+        subject: showData.subject_name,
+        dueDate: showData.due_date,
+        content: showData.content,
+      });
+    }
+  }, [showData]);
+
   //EDITOR CONTENT
   //--main variable
   const [itemsAssignment, setItemsAssignment] = useState({
@@ -27,8 +56,9 @@ const Add = () => {
     class: '',
     subject: '',
     dueDate: '',
-    content: null,
+    content: '',
   });
+
   //----for content
   const contentReff = useReff('');
 
@@ -73,10 +103,11 @@ const Add = () => {
     (fileRef.current as HTMLInputElement).value = '';
   }
   //FILES
+  console.log(files);
 
   //HANDLE SUBMIT
   //--handel create content
-  const [createAssignment, { isSuccess: successAs, error: errorAs }] = useCreateAssignmentMutation();
+  const [editAssignment, { isSuccess: successAs, error: errorAs }] = useEditAssignmentMutation();
 
   const [content, setContent] = useState(contentReff.current);
 
@@ -94,13 +125,13 @@ const Add = () => {
     // Menunggu pembaruan state content selesai
     await setContent(updatedContent);
     // Kemudian, memanggil createAssignment dengan objek assignment yang diperbarui
-    await createAssignment(updatedAssignment);
+    await editAssignment(updatedAssignment);
 
     addItem(e);
   };
 
   //handle create file
-  const [createFiles, { isSuccess, error }] = useCreateFilesMutation({});
+  const [editFiles, { isSuccess, error }] = useEditFilesMutation({});
 
   const addItem = async (e: any) => {
     const formData = new FormData();
@@ -112,10 +143,9 @@ const Add = () => {
     });
     e.preventDefault();
 
-    await createFiles({ data: formData, ass_uid: itemsAssignment.uid });
+    await editFiles({ data: formData, ass_uid: itemsAssignment.uid });
   };
   ///HANDLE SUBMIT
-  const router = useRouter();
   useEffect(() => {
     if (successAs && isSuccess) {
       toast.success('Student add with excel successfully');
@@ -136,17 +166,19 @@ const Add = () => {
     }
   }, [error]);
 
+  console.log(itemsAssignment);
+  console.log(itemsAssignment.class);
+
   return (
     <div className="flex flex-col gap-2.5 xl:flex-row">
       <div className="panel flex-1  py-6 ltr:xl:mr-6 rtl:xl:ml-6">
         <div>
           <label htmlFor="currency">Content</label>
-          <DynamicJoditEditor value={contentReff.current} onChange={(newContent) => (contentReff.current = newContent)} />
+          <DynamicJoditEditor value={itemsAssignment.content} onChange={(newContent) => (contentReff.current = newContent)} />
         </div>
 
         <div className="mt-6">
           <label htmlFor="currency">Multiple File Upload</label>
-          {/* <FileInput /> */}
           <UploadFiles fileRef={fileRef} handleFileDrop={handleFileDrop} files={files} handleFileDelete={handleFileDelete} setFiles={setFiles} />
         </div>
       </div>
@@ -160,7 +192,7 @@ const Add = () => {
                 type="text"
                 name="name"
                 className="form-input"
-                defaultValue={itemsAssignment.name}
+                value={itemsAssignment.name}
                 onChange={(e: any) => setItemsAssignment({ ...itemsAssignment, name: e.target.value })}
                 placeholder="Enter Name"
               />
@@ -168,18 +200,7 @@ const Add = () => {
           </div>
           <div className="mt-4">
             <label htmlFor="currency">Class</label>
-            <select required className="form-select" onChange={(e: any) => setItemsAssignment({ ...itemsAssignment, subject: e.target.value })}>
-              <option value="">Select Subject</option>
-              {dataSubjects?.map((item: any) => (
-                <option value={item.name} key={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="mt-4">
-            <label htmlFor="currency">Subject</label>
-            <select required className="form-select" onChange={(e: any) => setItemsAssignment({ ...itemsAssignment, class: e.target.value })}>
+            <select required className="form-select" value={itemsAssignment.class} onChange={(e: any) => setItemsAssignment({ ...itemsAssignment, class: e.target.value })}>
               <option value="">Select Class</option>
               {dataClasses?.map((item: any) => (
                 <option value={item.name} key={item.id}>
@@ -189,8 +210,26 @@ const Add = () => {
             </select>
           </div>
           <div className="mt-4">
+            <label htmlFor="currency">Subject</label>
+            <select required className="form-select" value={itemsAssignment.subject} onChange={(e: any) => setItemsAssignment({ ...itemsAssignment, subject: e.target.value })}>
+              <option value="">Select Subject</option>
+              {dataSubjects?.map((item: any) => (
+                <option value={item.name} key={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="mt-4">
             <label htmlFor="tax">Due Date</label>
-            <input id="tax" type="datetime-local" name="tax" className="form-input" onChange={(e: any) => setItemsAssignment({ ...itemsAssignment, dueDate: e.target.value })} />
+            <input
+              id="tax"
+              type="datetime-local"
+              name="tax"
+              className="form-input"
+              value={itemsAssignment?.dueDate}
+              onChange={(e: any) => setItemsAssignment({ ...itemsAssignment, dueDate: e.target.value })}
+            />
           </div>
         </div>
         <div className="panel">
@@ -218,4 +257,4 @@ const Add = () => {
   );
 };
 
-export default Add;
+export default Edit;

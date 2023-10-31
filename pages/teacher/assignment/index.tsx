@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/pages/hooks/auth';
-import { useGetAllAssignmentQuery } from '@/redux/features/assignment/assignmentApi';
+import { useDeleteAssignmentMutation, useDeleteFileMutation, useGetAllAssignmentQuery } from '@/redux/features/assignment/assignmentApi';
 
 type Props = {};
 
@@ -176,7 +176,8 @@ const index = (props: Props) => {
   ///EDIT
   //DELETE
   //--redux
-  const [deleteTeacher, { isSuccess: successDelete }] = useDeleteTeacherMutation({});
+  const [deleteAssignment, { isSuccess: successDelete }] = useDeleteAssignmentMutation({});
+  const [deleteFiles, { isSuccess: successDeleteF }] = useDeleteFileMutation({});
   //--use effect when finish
   useEffect(() => {
     if (successDelete) {
@@ -195,10 +196,11 @@ const index = (props: Props) => {
           confirmButtonText: 'Delete',
           padding: '2em',
           customClass: 'sweet-alerts',
-        }).then((result) => {
+        }).then(async (result) => {
           if (result.value) {
             Swal.fire({ title: 'Deleted!', text: 'Your data has been deleted.', icon: 'success', customClass: 'sweet-alerts' });
-            deleteTeacher(id);
+            await deleteAssignment(id);
+            // await deleteFiles(id);
           }
         });
       }
@@ -390,6 +392,7 @@ const index = (props: Props) => {
   }, [itemsShow]);
 
   console.log(itemsShow);
+  console.log(recordsData);
 
   return (
     <>
@@ -433,7 +436,6 @@ const index = (props: Props) => {
             </div>
             <div className="datatables pagination-padding px-5">
               <DataTable
-                // className={`${isDark} table-hover whitespace-nowrap`}
                 records={recordsData}
                 columns={[
                   {
@@ -441,53 +443,23 @@ const index = (props: Props) => {
                     sortable: true,
                   },
                   {
-                    accessor: 'subject',
-                    sortable: false,
-                    title: 'Subjects',
-                    render: ({ subject }) => (
-                      <ul>
-                        {subject?.length === 0 ? (
-                          <span className="text-[14px] text-white-dark">There are not subject</span>
-                        ) : (
-                          <>
-                            {subject?.map((sub: any) => (
-                              <span key={sub.id} className="badge m-1 whitespace-nowrap bg-info">
-                                {sub.name}
-                              </span>
-                            ))}
-                          </>
-                        )}
-                      </ul>
-                    ),
+                    accessor: 'class_name',
+                    title: 'Class',
+                    sortable: true,
                   },
                   {
-                    accessor: 'class',
-                    sortable: false,
-                    title: 'Class',
-                    render: ({ classes }) => (
-                      <ul>
-                        {classes?.length === 0 ? (
-                          <span className="text-[14px] text-white-dark">There are not classes</span>
-                        ) : (
-                          <>
-                            {classes?.map((cls: any) => (
-                              <span key={cls.id} className="badge badge-outline-info mr-3 whitespace-nowrap">
-                                {cls.name}
-                              </span>
-                            ))}
-                          </>
-                        )}
-                      </ul>
-                    ),
+                    accessor: 'subject_name',
+                    title: 'Subject',
+                    sortable: true,
                   },
                   {
                     accessor: 'action',
                     title: 'Actions',
                     sortable: false,
                     textAlignment: 'center',
-                    render: ({ id }) => (
+                    render: ({ uid }) => (
                       <div className="mx-auto flex w-max items-center gap-4">
-                        <button type="button" className="flex hover:text-info" onClick={() => handleEdit(id)}>
+                        <Link href={`/teacher/assignment/edit/${uid}`} type="button" className="flex hover:text-info">
                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-4.5 w-4.5">
                             <path
                               opacity="0.5"
@@ -508,8 +480,8 @@ const index = (props: Props) => {
                               strokeWidth="1.5"
                             ></path>
                           </svg>
-                        </button>
-                        <button className="flex hover:text-primary" onClick={() => handleShow(id)}>
+                        </Link>
+                        <Link href={`/teacher/assignment/show/${uid}`} className="flex hover:text-primary">
                           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                               opacity="0.5"
@@ -519,8 +491,8 @@ const index = (props: Props) => {
                             />
                             <path d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z" stroke="currentColor" strokeWidth="1.5" />
                           </svg>
-                        </button>
-                        <button type="button" className="flex hover:text-danger" onClick={(e) => deleteRow(id)}>
+                        </Link>
+                        <button type="button" className="flex hover:text-danger" onClick={(e) => deleteRow(uid)}>
                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5">
                             <path d="M20.5001 6H3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"></path>
                             <path

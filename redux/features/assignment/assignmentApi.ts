@@ -10,6 +10,14 @@ export const assignmentApi = apiSlice.injectEndpoints({
         credentials: 'include' as const,
       }),
     }),
+    editAssignment: builder.mutation({
+      query: (data) => ({
+        url: 'teacher-assignment-edit',
+        method: 'POST',
+        body: data,
+        credentials: 'include' as const,
+      }),
+    }),
     createAssignment: builder.mutation({
       query: (data) => ({
         url: 'teacher-assignment',
@@ -26,6 +34,14 @@ export const assignmentApi = apiSlice.injectEndpoints({
         credentials: 'include' as const,
       }),
     }),
+    editFiles: builder.mutation({
+      query: ({ data, ass_uid }) => ({
+        url: `files-edit/${ass_uid}`,
+        method: 'POST',
+        body: data,
+        credentials: 'include' as const,
+      }),
+    }),
     getAllFiles: builder.query({
       query: () => ({
         url: 'files',
@@ -33,30 +49,30 @@ export const assignmentApi = apiSlice.injectEndpoints({
         credentials: 'include' as const,
       }),
     }),
-    // editTeacher: builder.mutation({
-    //   query: ({ id, data }) => ({
-    //     url: `teacher/${id}`,
-    //     method: 'PUT',
-    //     body: data,
-    //     credentials: 'include' as const,
-    //   }),
-    // }),
-    // deleteTeacher: builder.mutation({
-    //   query: (id) => ({
-    //     url: `teacher/${id}`,
-    //     method: 'DELETE',
-    //     credentials: 'include' as const,
-    //   }),
-    // }),
-    // createExcelTeacher: builder.mutation({
-    //   query: (data) => ({
-    //     url: 'teacher-excel',
-    //     method: 'POST',
-    //     body: data,
-    //     credentials: 'include' as const,
-    //   }),
-    // }),
+    deleteAssignment: builder.mutation({
+      query: (id) => ({
+        url: `teacher-assignment/${id}`,
+        method: 'DELETE',
+        credentials: 'include' as const,
+      }),
+    }),
+    deleteFile: builder.mutation({
+      query: (id) => ({
+        url: `files/${id}`,
+        method: 'DELETE',
+        credentials: 'include' as const,
+      }),
+    }),
   }),
 });
 
-export const { useGetAllFilesQuery, useCreateFilesMutation, useGetAllAssignmentQuery, useCreateAssignmentMutation } = assignmentApi;
+export const {
+  useDeleteAssignmentMutation,
+  useDeleteFileMutation,
+  useEditAssignmentMutation,
+  useEditFilesMutation,
+  useGetAllFilesQuery,
+  useCreateFilesMutation,
+  useGetAllAssignmentQuery,
+  useCreateAssignmentMutation,
+} = assignmentApi;

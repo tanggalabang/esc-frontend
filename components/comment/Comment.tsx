@@ -1,46 +1,69 @@
-import React, { useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
+import React, { FC, useEffect, useRef, useState } from 'react';
 
 import { Box, List } from '@mui/material';
-// @mui
-import { Button, Avatar, Divider, ListItem, TextField, Typography, ListItemText, ListItemAvatar } from '@mui/material';
-// utils
-type Props = {};
+import { Avatar, Divider, ListItem, Typography, ListItemText, ListItemAvatar } from '@mui/material';
 
-const Test3 = (props: Props) => {
+type Props = {
+  uid: string;
+};
+
+// const Comment = (props: Props) => {
+const Comment: FC<Props> = ({ uid }) => {
+  //--main variable for data
   const [items, setItems] = useState({
     message: '',
-    ass_uid: 'CC46et0yg1lwvWaPEFqt',
+    ass_uid: uid,
     parent_id: 0,
   });
 
+  //ACTIVE COMMENT
+  //--active for start commnet
+  const [active, setActive] = useState(false);
+
+  //--handle active
+  const handleActive = () => {
+    if (active) {
+      setActive(false);
+    } else {
+      setActive(true);
+    }
+  };
+  ///ACTIVE COMMENT
+
+  //SEND COMMNET
   const [createCommentAss, { isSuccess, error }] = useCreateCommentAssignmentMutation();
 
+  //--handle create comment
   const handleSend = async (e: any) => {
     e.preventDefault();
     if (items.message.length === 0) {
-      toast.error('commentar canot be empty');
+      toast.error('Commnet canot be empty');
     } else {
       await createCommentAss(items);
       setItems({
         message: '',
-        ass_uid: 'CC46et0yg1lwvWaPEFqt',
+        ass_uid: uid,
         parent_id: 0,
       });
     }
     refetch();
   };
+  ///SEND COMMNET
 
+  //GET COMMNET
   const { isLoading, data, refetch } = useGetAllCommentAssignmentQuery({}, { refetchOnMountOrArgChange: true });
+
+  const showData = data?.filter((item: any) => item.ass_uid === uid);
+
+  console.log(showData);
 
   useEffect(() => {
     refetch();
-    if (isSuccess) {
-    }
-  }, [data, isSuccess]);
+  }, [isSuccess]);
 
+  //--data always bottom on scroll component
   const scrollRef = useRef<HTMLDivElement | null>(null);
-
-  const [active, setActive] = useState(false);
 
   useEffect(() => {
     if (active) {
@@ -49,9 +72,9 @@ const Test3 = (props: Props) => {
         scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
       }
     }
-  }, [data, active]); // Pastikan untuk menyertakan data atau kondisi lain yang memicu perubahan
+  }, [showData, active]); // Pastikan untuk menyertakan data atau kondisi lain yang memicu perubahan
 
-  // Membuat efek samping untuk menjadwalkan pemanggilan refetch setiap 5 detik
+  //--call refecth every 5 secods if active
   useEffect(() => {
     if (active) {
       const intervalId = setInterval(() => {
@@ -63,14 +86,7 @@ const Test3 = (props: Props) => {
       return () => clearInterval(intervalId);
     }
   }, [active]);
-
-  const handleActive = () => {
-    if (active) {
-      setActive(false);
-    } else {
-      setActive(true);
-    }
-  };
+  //GET COMMNET
 
   return (
     <div className="">
@@ -79,7 +95,7 @@ const Test3 = (props: Props) => {
           <div className=" rounded-md border border-white-light bg-white px-6 py-3.5 text-center dark:border-dark dark:bg-[#1b2e4b] md:flex-row ltr:md:text-left rtl:md:text-right">
             <div style={{ maxHeight: '400px', overflowY: 'auto' }} ref={scrollRef}>
               <div className="mr-4">
-                {data?.length === 0 ? (
+                {showData?.length === 0 ? (
                   <div className="flex items-center justify-center">
                     <br />
                     <br />
@@ -92,7 +108,7 @@ const Test3 = (props: Props) => {
                   </div>
                 ) : (
                   <List disablePadding>
-                    {data?.map((comment: any) => {
+                    {showData?.map((comment: any) => {
                       const parentCom = comment.parent_id == 0;
 
                       return (
@@ -100,6 +116,7 @@ const Test3 = (props: Props) => {
                           {comment.parent_id === 0 ? (
                             <Box sx={{}}>
                               <BlogPostCommentItem
+                                uid={uid}
                                 userId={comment.user_id}
                                 parentId={comment.id}
                                 parentCom={parentCom}
@@ -111,10 +128,11 @@ const Test3 = (props: Props) => {
                               />
                             </Box>
                           ) : null}
-                          {data.map((reply: any) => {
+                          {showData.map((reply: any) => {
                             if (reply.parent_id === comment.id) {
                               return (
                                 <BlogPostCommentItem
+                                  uid={uid}
                                   userId={reply.user_id}
                                   parentId={reply.id}
                                   key={reply?.id}
@@ -167,12 +185,12 @@ const Test3 = (props: Props) => {
     </div>
   );
 };
-export default Test3;
+export default Comment;
 
-import PropTypes from 'prop-types';
 import { useAuth } from '@/pages/hooks/auth';
 
 BlogPostCommentItem.propTypes = {
+  uid: PropTypes.string,
   name: PropTypes.string,
   profilePic: PropTypes.string,
   message: PropTypes.string,
@@ -183,10 +201,11 @@ BlogPostCommentItem.propTypes = {
   refetch: () => Promise<void>,
 };
 
-export function BlogPostCommentItem({ userId, refetch, parentId, parentCom, name, message, profilePic, createdAt }) {
+export function BlogPostCommentItem({ uid, userId, refetch, parentId, parentCom, name, message, profilePic, createdAt }) {
+  //--main variable for data
   const [itemsC, setItemsC] = useState({
     message: '',
-    ass_uid: 'CC46et0yg1lwvWaPEFqt',
+    ass_uid: uid,
     parent_id: parentId,
   });
 
@@ -197,8 +216,9 @@ export function BlogPostCommentItem({ userId, refetch, parentId, parentCom, name
     }));
   }, [parentId]);
 
+  //CREATE COMMENT
   const [createCommentAss, { isSuccess, error }] = useCreateCommentAssignmentMutation();
-
+  //--handle send
   const handleSend = async (e: any) => {
     e.preventDefault();
     if (itemsC.message.length === 0) {
@@ -215,9 +235,11 @@ export function BlogPostCommentItem({ userId, refetch, parentId, parentCom, name
     }
     refetch();
   };
-  //===========
-  const [openReply, setOpenReply] = useState(false);
 
+  //REPLY
+  //--variable open
+  const [openReply, setOpenReply] = useState(false);
+  //--handle open reply
   const handleOpenReply = () => {
     if (openReply) {
       setOpenReply(false);
@@ -230,8 +252,9 @@ export function BlogPostCommentItem({ userId, refetch, parentId, parentCom, name
       setOpenReply(true);
     }
   };
+  //REPLY
+  //get data user login
   const { user } = useAuth();
-  console.log(user);
 
   return (
     <>
@@ -322,27 +345,9 @@ export function BlogPostCommentItem({ userId, refetch, parentId, parentCom, name
   );
 }
 
-import { format, getTime, formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
 import { useCreateCommentAssignmentMutation, useGetAllCommentAssignmentQuery } from '@/redux/features/comment/commnetApi';
 import toast from 'react-hot-toast';
-
-// ----------------------------------------------------------------------
-
-export function fDate(date) {
-  return format(new Date(date), 'dd MMMM yyyy');
-}
-
-export function fDateTime(date) {
-  return format(new Date(date), 'dd MMM yyyy p');
-}
-
-export function fTimestamp(date) {
-  return getTime(new Date(date));
-}
-
-export function fDateTimeSuffix(date) {
-  return format(new Date(date), 'dd/MM/yyyy hh:mm p');
-}
 
 export function fNow(date: Date | number | string) {
   const currentDate = new Date();
