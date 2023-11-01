@@ -244,6 +244,17 @@ const Sidebar = () => {
               {user && user.user_type === 2 && (
                 <>
                   <li className="nav-item">
+                    <Link href="/teacher/material" className="group">
+                      <div className="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="group-hover:!text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                          <circle cx="12" cy="6" r="4" fill="currentColor" />
+                          <path opacity="0.5" d="M20 17.5C20 19.9853 20 22 12 22C4 22 4 19.9853 4 17.5C4 15.0147 7.58172 13 12 13C16.4183 13 20 15.0147 20 17.5Z" fill="#1C274C" />
+                        </svg>
+                        <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('Material')}</span>
+                      </div>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
                     <Link href="/teacher/assignment" className="group">
                       <div className="flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" className="group-hover:!text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none">

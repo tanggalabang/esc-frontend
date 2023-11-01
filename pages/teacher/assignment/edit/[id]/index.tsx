@@ -184,6 +184,7 @@ const Edit = () => {
       </div>
       <div className=" mt-6 w-full xl:mt-0 xl:w-96">
         <div className="panel mb-5">
+          <h5 className="mb-6 text-lg font-semibold dark:text-white-light">Assignment Edit</h5>
           <div>
             <div>
               <label htmlFor="shipping-charge">Name</label>

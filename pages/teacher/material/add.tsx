@@ -9,6 +9,9 @@ import { useCreateFilesMutation } from '@/redux/features/assignment/assignmentAp
 import UploadFiles from '@/components/upload-files/UploadFiles';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
+import { useCreateMaterialMutation } from '@/redux/features/material/materialApi';
+import Test5 from '@/pages/test/test5';
+import SingleImageUpload from '@/components/single-image-upload/SingleImageUpload';
 
 const DynamicJoditEditor = dynamic(() => import('jodit-react'), {
   ssr: false,
@@ -26,8 +29,8 @@ const Add = () => {
     name: '',
     class: '',
     subject: '',
-    dueDate: '',
     content: null,
+    image: null as File | null,
   });
   //----for content
   const contentReff = useReff('');
@@ -43,6 +46,8 @@ const Add = () => {
     }
     return result;
   }
+  // varible for thumbnail
+  const [images, setImages] = useState<any>([]);
 
   //--get data subject and class
   const { data: dataSubjects } = useGetAllSubjectQuery({});
@@ -76,10 +81,11 @@ const Add = () => {
 
   //HANDLE SUBMIT
   //--handel create content
-  const [createAssignment, { isSuccess: successAs, error: errorAs }] = useCreateAssignmentMutation();
+  const [createMaterial, { isSuccess: successAs, error: errorAs }] = useCreateMaterialMutation();
 
   const [content, setContent] = useState(contentReff.current);
 
+  console.log(images[0]?.file);
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     // Mengambil nilai terbaru dari contentReff.current
@@ -90,14 +96,32 @@ const Add = () => {
     const updatedAssignment = {
       ...itemsAssignment,
       content: updatedContent,
+      image: images[0].file,
     };
+
+    // console.log(images[0].file);
+    // console.log(pdatedAssignment);
+    // e.preventDefault();
+    const formData = new FormData();
+    formData.append('uid', updatedAssignment.uid);
+    formData.append('name', updatedAssignment.name);
+    formData.append('class', updatedAssignment.class);
+    formData.append('subject', updatedAssignment.subject);
+    formData.append('content', updatedAssignment.content);
+
+    if (updatedAssignment.image) {
+      console.log('bambang');
+      formData.append('image', updatedAssignment.image);
+    }
+
     // Menunggu pembaruan state content selesai
     await setContent(updatedContent);
     // Kemudian, memanggil createAssignment dengan objek assignment yang diperbarui
-    await createAssignment(updatedAssignment);
+    await createMaterial(formData);
 
     addItem(e);
   };
+  // console.log(itemsAssignment);
 
   //handle create file
   const [createFiles, { isSuccess, error }] = useCreateFilesMutation({});
@@ -119,7 +143,7 @@ const Add = () => {
   useEffect(() => {
     if (successAs && isSuccess) {
       toast.success('Student add with excel successfully');
-      router.push('/teacher/assignment');
+      router.push('/teacher/material');
     }
   }, [successAs, isSuccess]);
   useEffect(() => {
@@ -153,6 +177,7 @@ const Add = () => {
       <div className=" mt-6 w-full xl:mt-0 xl:w-96">
         <div className="panel mb-5">
           <h5 className="mb-6 text-lg font-semibold dark:text-white-light">Material Add</h5>
+          <SingleImageUpload images={images} setImages={setImages} />
           <div>
             <div>
               <label htmlFor="shipping-charge">Name</label>
@@ -169,17 +194,6 @@ const Add = () => {
           </div>
           <div className="mt-4">
             <label htmlFor="currency">Class</label>
-            <select required className="form-select" onChange={(e: any) => setItemsAssignment({ ...itemsAssignment, subject: e.target.value })}>
-              <option value="">Select Subject</option>
-              {dataSubjects?.map((item: any) => (
-                <option value={item.name} key={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="mt-4">
-            <label htmlFor="currency">Subject</label>
             <select required className="form-select" onChange={(e: any) => setItemsAssignment({ ...itemsAssignment, class: e.target.value })}>
               <option value="">Select Class</option>
               {dataClasses?.map((item: any) => (
@@ -190,8 +204,15 @@ const Add = () => {
             </select>
           </div>
           <div className="mt-4">
-            <label htmlFor="tax">Due Date</label>
-            <input id="tax" type="datetime-local" name="tax" className="form-input" onChange={(e: any) => setItemsAssignment({ ...itemsAssignment, dueDate: e.target.value })} />
+            <label htmlFor="currency">Subject</label>
+            <select required className="form-select" onChange={(e: any) => setItemsAssignment({ ...itemsAssignment, subject: e.target.value })}>
+              <option value="">Select Subject</option>
+              {dataSubjects?.map((item: any) => (
+                <option value={item.name} key={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
         <div className="panel">

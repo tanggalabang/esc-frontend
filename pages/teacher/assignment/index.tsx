@@ -453,6 +453,10 @@ const index = (props: Props) => {
                     sortable: true,
                   },
                   {
+                    accessor: 'due_date',
+                    sortable: true,
+                  },
+                  {
                     accessor: 'action',
                     title: 'Actions',
                     sortable: false,

@@ -117,6 +117,7 @@ const index = (props: Props) => {
 
     await updateProfile(formData);
   };
+  // console.log(data);
   console.log(data?.image);
 
   const [profileImage, setProfileImage] = useState('');

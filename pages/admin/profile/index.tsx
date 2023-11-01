@@ -18,7 +18,7 @@ const index = (props: Props) => {
 
   const handleDelete = async (e: any) => {
     e.preventDefault();
-    console.log('hallo');
+    // console.log('hallo');
     const showAlert = async (type: number) => {
       if (type === 10) {
         Swal.fire({
