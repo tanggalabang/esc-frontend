@@ -25,6 +25,8 @@ const index = (props: Props) => {
   const [createTeacher, { isSuccess: successAdd, error: errorAdd }] = useCreateTeacherMutation();
   ///REDUX
 
+  // console.log(data);
+
   //SHOW ON TABLE
   useEffect(() => {
     if (data) {
@@ -39,7 +41,7 @@ const index = (props: Props) => {
   //--find data and show
   const showData = data && data.find((i: any) => i.id === showId);
 
-  console.log(showData);
+  // console.log(showData)
   useEffect(() => {
     if (showData) {
       setItemsShow(showData);
@@ -384,7 +386,7 @@ const index = (props: Props) => {
     }
   }, [itemsShow]);
 
-  console.log(itemsShow);
+  console.log(recordsData);
 
   return (
     <>

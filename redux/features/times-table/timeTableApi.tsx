@@ -18,7 +18,14 @@ export const timesTableApi = apiSlice.injectEndpoints({
         credentials: 'include' as const,
       }),
     }),
+    getAllT: builder.query({
+      query: () => ({
+        url: 'times-table',
+        method: 'GET',
+        credentials: 'include' as const,
+      }),
+    }),
   }),
 });
 
-export const { useGetAllTimeTableQuery, useCreateTimeTableMutation } = timesTableApi;
+export const { useGetAllTQuery, useGetAllTimeTableQuery, useCreateTimeTableMutation } = timesTableApi;
