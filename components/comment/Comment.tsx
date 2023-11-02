@@ -277,7 +277,7 @@ export function BlogPostCommentItem({ uid, userId, refetch, parentId, parentCom,
               sx={{
                 width: 48,
                 height: 48,
-                border: '2px solid blue', // Atur ukuran dan warna border sesuai kebutuhan
+                border: '4px solid blue', // Atur ukuran dan warna border sesuai kebutuhan
                 marginTop: '10px',
               }}
             />

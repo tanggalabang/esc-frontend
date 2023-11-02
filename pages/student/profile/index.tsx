@@ -6,7 +6,7 @@ type Props = {};
 const index = (props: Props) => {
   return (
     <>
-      <RouteProtected userType={1} />
+      <RouteProtected userType={3} />
       <Profile />
     </>
   );

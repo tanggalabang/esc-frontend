@@ -28,7 +28,7 @@ const Show = ({ params }: any) => {
 
   return (
     <>
-      <RouteProtected userType={2} />
+      <RouteProtected userType={3} />
       {isLoading ? (
         <div className="flex items-center justify-center">
           <span className="m-auto mb-10 inline-block h-10 w-10 animate-spin rounded-full border-4 border-transparent border-l-primary align-middle"></span>
@@ -80,7 +80,7 @@ const Show = ({ params }: any) => {
             </div>
             <div className="panel">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-1">
-                <Link href="/teacher/material" className="btn btn-danger w-full gap-2">
+                <Link href="/student/material" className="btn btn-danger w-full gap-2">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
                     <path d="M14.5 7L19.5 12L14.5 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                     <path d="M19.5 12L9.5 12C7.83333 12 4.5 13 4.5 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />

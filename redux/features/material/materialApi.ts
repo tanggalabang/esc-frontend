@@ -33,7 +33,23 @@ export const materialApi = apiSlice.injectEndpoints({
         credentials: 'include' as const,
       }),
     }),
+
+    // student
+    getAllMaterialByStudent: builder.query({
+      query: () => ({
+        url: 'material-student',
+        method: 'GET',
+        credentials: 'include' as const,
+      }),
+    }),
+    getAllMaterialByTeacher: builder.query({
+      query: () => ({
+        url: 'material-teacher',
+        method: 'GET',
+        credentials: 'include' as const,
+      }),
+    }),
   }),
 });
 
-export const { useCreateMaterialMutation, useDeleteMaterialMutation, useEditMaterialMutation, useGetAllMaterialQuery } = materialApi;
+export const { useGetAllMaterialByTeacherQuery, useGetAllMaterialByStudentQuery, useCreateMaterialMutation, useDeleteMaterialMutation, useEditMaterialMutation, useGetAllMaterialQuery } = materialApi;

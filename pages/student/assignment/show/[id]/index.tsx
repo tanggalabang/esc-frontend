@@ -1,11 +1,12 @@
 import Link from 'next/link';
 import HTMLReactParser from 'html-react-parser';
-import { useGetAllFilesQuery } from '@/redux/features/assignment/assignmentApi';
+import { useGetAllAssignmentQuery, useGetAllFilesQuery } from '@/redux/features/assignment/assignmentApi';
 import { useRouter } from 'next/router';
 //componnets
 import FileShow from '@/components/files/FileShow';
 import Comment from '@/components/comment/Comment';
-import { useGetAllMaterialQuery } from '@/redux/features/material/materialApi';
+import { useAuth } from '@/pages/hooks/auth';
+import { useEffect } from 'react';
 import RouteProtected from '@/components/route-protected/RouteProtected';
 
 type Props = {};
@@ -16,7 +17,7 @@ const Show = ({ params }: any) => {
   const { id } = router.query;
 
   //--get assignment by id url
-  const { isLoading, data, refetch } = useGetAllMaterialQuery({}, { refetchOnMountOrArgChange: true });
+  const { isLoading, data, refetch } = useGetAllAssignmentQuery({}, { refetchOnMountOrArgChange: true });
 
   const showData = data && data.find((i: any) => i.uid === id);
 
@@ -28,7 +29,7 @@ const Show = ({ params }: any) => {
 
   return (
     <>
-      <RouteProtected userType={2} />
+      <RouteProtected userType={3} />
       {isLoading ? (
         <div className="flex items-center justify-center">
           <span className="m-auto mb-10 inline-block h-10 w-10 animate-spin rounded-full border-4 border-transparent border-l-primary align-middle"></span>
@@ -76,11 +77,15 @@ const Show = ({ params }: any) => {
                   <th className="py-2">Subject</th>
                   <td>: {showData?.subject_name}</td>
                 </tr>
+                <tr>
+                  <th className="py-2">Due Date</th>
+                  <td>: {showData?.due_date}</td>
+                </tr>
               </table>
             </div>
             <div className="panel">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-1">
-                <Link href="/teacher/material" className="btn btn-danger w-full gap-2">
+                <Link href="/student/assignment" className="btn btn-danger w-full gap-2">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
                     <path d="M14.5 7L19.5 12L14.5 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                     <path d="M19.5 12L9.5 12C7.83333 12 4.5 13 4.5 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />

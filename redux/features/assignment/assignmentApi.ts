@@ -63,10 +63,28 @@ export const assignmentApi = apiSlice.injectEndpoints({
         credentials: 'include' as const,
       }),
     }),
+    //teacher
+    getAllAssignmentByTeacher: builder.query({
+      query: () => ({
+        url: 'assignment-teacher',
+        method: 'GET',
+        credentials: 'include' as const,
+      }),
+    }),
+    //student
+    getAllAssignmentByStudent: builder.query({
+      query: () => ({
+        url: 'assignment-student',
+        method: 'GET',
+        credentials: 'include' as const,
+      }),
+    }),
   }),
 });
 
 export const {
+  useGetAllAssignmentByTeacherQuery,
+  useGetAllAssignmentByStudentQuery,
   useDeleteAssignmentMutation,
   useDeleteFileMutation,
   useEditAssignmentMutation,

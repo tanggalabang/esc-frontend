@@ -15,6 +15,13 @@ export const classSubjectApi = apiSlice.injectEndpoints({
         credentials: 'include' as const,
       }),
     }),
+    getAllClassByTeacher: builder.query({
+      query: () => ({
+        url: 'class-teacher',
+        method: 'GET',
+        credentials: 'include' as const,
+      }),
+    }),
     createClass: builder.mutation({
       query: (data) => ({
         url: 'class',
@@ -38,9 +45,17 @@ export const classSubjectApi = apiSlice.injectEndpoints({
         credentials: 'include' as const,
       }),
     }),
+    // subject
     getAllSubject: builder.query({
       query: () => ({
         url: 'subject',
+        method: 'GET',
+        credentials: 'include' as const,
+      }),
+    }),
+    getAllSubjectByTeacher: builder.query({
+      query: () => ({
+        url: 'subject-teacher',
         method: 'GET',
         credentials: 'include' as const,
       }),
@@ -72,6 +87,8 @@ export const classSubjectApi = apiSlice.injectEndpoints({
 });
 
 export const {
+  useGetAllClassByTeacherQuery,
+  useGetAllSubjectByTeacherQuery,
   useGetAllClassQuery,
   useCreateClassMutation,
   useEditClassMutation,
