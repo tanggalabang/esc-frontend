@@ -65,7 +65,7 @@ const DefaultLayout = ({ children }: PropsWithChildren) => {
   return (
     <App>
       {/* BEGIN MAIN CONTAINER */}
-      <div className="relative bg-gray-100">
+      <div className="relative bg-gray-100 dark:bg-inherit">
         {/* screen loader  */}
         {!user && (
           <div className="screen_loader animate__animated fixed inset-0 z-[60] grid place-content-center bg-[#fafafa] dark:bg-[#060818]">
