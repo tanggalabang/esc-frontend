@@ -176,10 +176,12 @@ const Comment: FC<Props> = ({ uid }) => {
           </div>
         </>
       ) : (
-        <div className="flex items-center justify-center">
-          <button className="btn btn-primary" onClick={handleActive}>
-            Start Commentar
-          </button>
+        <div className=" rounded-md border border-white-light bg-white px-6 py-3.5 text-center dark:border-dark dark:bg-[#1b2e4b] md:flex-row ltr:md:text-left rtl:md:text-right">
+          <div className="flex items-center justify-center">
+            <button className="btn btn-info my-6" onClick={handleActive}>
+              Start Commentar
+            </button>
+          </div>
         </div>
       )}
     </div>

@@ -5,7 +5,9 @@ import sortBy from 'lodash/sortBy';
 import Swal from 'sweetalert2';
 import { useAuth } from '@/pages/hooks/auth';
 import { useDeleteAssignmentMutation, useDeleteFileMutation, useGetAllAssignmentQuery } from '@/redux/features/assignment/assignmentApi';
-import RouteProtected from '../route-protected/RouteProtected';
+import { useGetAllStudentWorkQuery } from '@/redux/features/student-work/studentWorkApi';
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css';
 
 type Props = {
   data: any;
@@ -26,7 +28,7 @@ const Assignment: FC<Props> = ({ data, isLoading, refetch }) => {
   const [items, setItems] = useState([]);
   ///SHOW
 
-  //DELETE
+  //DELETE FOR TEACHER
   //--redux
   const [deleteAssignment, { isSuccess: successDelete }] = useDeleteAssignmentMutation({});
   const [deleteFiles, { isSuccess: successDeleteF }] = useDeleteFileMutation({});
@@ -58,7 +60,7 @@ const Assignment: FC<Props> = ({ data, isLoading, refetch }) => {
     };
     showAlert(10);
   };
-  ///DELETE
+  ///DELETE FOR TEACHER
 
   //SEARCH
   const rowData = items;
@@ -98,6 +100,29 @@ const Assignment: FC<Props> = ({ data, isLoading, refetch }) => {
     setPage(1);
   }, [sortStatus]);
   ///SEARCH
+
+  //--finished or not
+  const { data: dataStudentWork } = useGetAllStudentWorkQuery({}, { refetchOnMountOrArgChange: true });
+
+  // //--late
+  // const [itemss, setItemss] = useState([]);
+  // useEffect(() => {
+  //   if (dataStudentWork) {
+  //     setItemss(dataStudentWork);
+  //   }
+  // }, [dataStudentWork]);
+
+  // const [items2, setItems2] = useState([]);
+  // const [createdTime, setCreatedTime] = useState();
+  // // const [studentWorkUid, setStudentWorkUid] = useState();
+
+  // useEffect(() => {
+  //   const content = itemss[0]?.created_at;
+  //   // const sWUid = itemss[0]?.uid;
+  //   setCreatedTime(content);
+  //   // setStudentWorkUid(sWUid);
+  // }, [itemss]);
+  // console.log(createdTime);
 
   return (
     <>
@@ -148,7 +173,73 @@ const Assignment: FC<Props> = ({ data, isLoading, refetch }) => {
                     },
                     {
                       accessor: 'due_date',
+                      title: 'Due Date',
                       sortable: true,
+                    },
+                    {
+                      accessor: 'status',
+                      title: 'Status',
+                      sortable: true,
+                      textAlignment: 'center',
+                      hidden: user?.user_type !== 3, // Hide the 'name' column if type_user is not equal to 3
+                      render: ({ due_date, uid }) => {
+                        const matchingWork = dataStudentWork?.find((work: any) => work?.ass_id === uid);
+                        if (matchingWork) {
+                          const createdTimes = matchingWork.created_at; // Convert the created_at timestamp to a Date object
+
+                          if (createdTimes > due_date) {
+                            return (
+                              <div className="flex justify-center">
+                                <span className="badge mr-3  bg-success text-center">Finish</span>
+                              </div>
+                            );
+                          } else {
+                            return (
+                              <div className="flex justify-center">
+                                <span className="badge mr-3 bg-success">Finish</span>
+                                <span className="badge badge-outline-danger ">Late</span>
+                              </div>
+                            );
+                          }
+                        } else {
+                          return (
+                            <div className="flex justify-center">
+                              <span className="badge mt-[-2px] bg-dark">Not Finished</span>
+                            </div>
+                          );
+                        }
+                      },
+                    },
+                    {
+                      accessor: 'score',
+                      title: 'Score',
+                      sortable: true,
+                      textAlignment: 'center',
+                      hidden: user?.user_type !== 3, // Hide the 'name' column if type_user is not equal to 3
+                      render: ({ uid }) => {
+                        const matchingWork = dataStudentWork?.find((work: any) => work?.ass_id === uid);
+                        if (matchingWork) {
+                          if (matchingWork?.score !== null) {
+                            return (
+                              <div className="flex justify-center">
+                                <span className="badge mr-3 rounded-full bg-warning py-1">{matchingWork?.score}</span>
+                              </div>
+                            );
+                          } else {
+                            return (
+                              <div className="flex justify-center">
+                                <span className="text-[14px] text-white-dark">Has not scored</span>
+                              </div>
+                            );
+                          }
+                        } else {
+                          return (
+                            <div className="flex justify-center">
+                              <span className="mr-2 text-[14px] text-white-dark">No work</span>
+                            </div>
+                          );
+                        }
+                      },
                     },
                     {
                       accessor: 'action',
@@ -216,6 +307,19 @@ const Assignment: FC<Props> = ({ data, isLoading, refetch }) => {
                                     ></path>
                                   </svg>
                                 </button>
+                                <Tippy content="Student work" placement="bottom">
+                                  <Link href={`/teacher/assignment/work/students/${uid}`} className="flex hover:text-primary">
+                                    <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                                      <path d="M4 6V19C4 20.6569 5.34315 22 7 22H17C18.6569 22 20 20.6569 20 19V9C20 7.34315 18.6569 6 17 6H4ZM4 6V5" stroke="currentColor" stroke-width="1.5" />
+                                      <path
+                                        d="M18 6.00002V6.75002H18.75V6.00002H18ZM15.7172 2.32614L15.6111 1.58368L15.7172 2.32614ZM4.91959 3.86865L4.81353 3.12619H4.81353L4.91959 3.86865ZM5.07107 6.75002H18V5.25002H5.07107V6.75002ZM18.75 6.00002V4.30604H17.25V6.00002H18.75ZM15.6111 1.58368L4.81353 3.12619L5.02566 4.61111L15.8232 3.0686L15.6111 1.58368ZM4.81353 3.12619C3.91638 3.25435 3.25 4.0227 3.25 4.92895H4.75C4.75 4.76917 4.86749 4.63371 5.02566 4.61111L4.81353 3.12619ZM18.75 4.30604C18.75 2.63253 17.2678 1.34701 15.6111 1.58368L15.8232 3.0686C16.5763 2.96103 17.25 3.54535 17.25 4.30604H18.75ZM5.07107 5.25002C4.89375 5.25002 4.75 5.10627 4.75 4.92895H3.25C3.25 5.9347 4.06532 6.75002 5.07107 6.75002V5.25002Z"
+                                        fill="currentColor"
+                                      />
+                                      <path opacity="0.5" d="M8 12H16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                      <path opacity="0.5" d="M8 15.5H13.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                    </svg>
+                                  </Link>
+                                </Tippy>
                               </>
                             )}
                             {user?.user_type === 3 && (

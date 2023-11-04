@@ -97,7 +97,8 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
       await axios.post('/logout').then(() => mutate())
     }
 
-    window.location.pathname = '/auth/login'
+    // window.location.pathname = '/auth/login'
+    router.push('http://localhost:3001/home-3')
   }
 
   useEffect(() => {

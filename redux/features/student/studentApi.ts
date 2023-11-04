@@ -10,6 +10,13 @@ export const courseApi = apiSlice.injectEndpoints({
         credentials: 'include' as const,
       }),
     }),
+    getAllStudentWithWork: builder.query({
+      query: () => ({
+        url: 'student-with-work',
+        method: 'GET',
+        credentials: 'include' as const,
+      }),
+    }),
     createCourse: builder.mutation({
       query: (data) => ({
         url: 'students',
@@ -44,4 +51,4 @@ export const courseApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetAllCoursesQuery, useCreateCourseMutation, useEditCourseMutation, useDeleteCourseMutation, useCreateExcelCourseMutation } = courseApi;
+export const { useGetAllStudentWithWorkQuery, useGetAllCoursesQuery, useCreateCourseMutation, useEditCourseMutation, useDeleteCourseMutation, useCreateExcelCourseMutation } = courseApi;
