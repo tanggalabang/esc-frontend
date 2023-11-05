@@ -246,7 +246,7 @@ const Dashboard: React.FC = () => {
               >
                 <ul className="text-black dark:text-white-dark">
                   <li>
-                    <Link href="/teacher/material">View Material</Link>
+                    <Link href="/student/material">View Material</Link>
                   </li>
                 </ul>
               </Dropdown>
@@ -277,7 +277,7 @@ const Dashboard: React.FC = () => {
               >
                 <ul className="text-black dark:text-white-dark">
                   <li>
-                    <Link href="/teacher/assignment">View Assignmet</Link>
+                    <Link href="/student/assignment">View Assignmet</Link>
                   </li>
                 </ul>
               </Dropdown>
