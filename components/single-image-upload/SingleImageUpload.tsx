@@ -26,6 +26,7 @@ const SingleImageUpload: FC<Props> = ({ images, setImages }) => {
             <label htmlFor="" className="!text-[14px]  !text-black">
               Upload Thumbnail
             </label>
+
             <button
               type="button"
               className="custom-file-container__image-clear"
@@ -37,24 +38,27 @@ const SingleImageUpload: FC<Props> = ({ images, setImages }) => {
               ×
             </button>
           </div>
-          <label className="custom-file-container__custom-file"></label>
-          <input type="file" className="custom-file-container__custom-file__custom-file-input" accept="image/*" />
-          <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
-          <ImageUploading value={images} onChange={onChange} maxNumber={maxNumber}>
-            {({ imageList, onImageUpload, onImageRemoveAll, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
-              <div className="upload__image-wrapper">
-                <button className="custom-file-container__custom-file__custom-file-control" onClick={onImageUpload}>
-                  Choose File...
-                </button>
-                {imageList.map((image, index) => (
-                  <div key={index} className=" custom-file-container__image-preview relative">
-                    <img src={image.dataURL} alt="img" className="m-auto" />
-                  </div>
-                ))}
-              </div>
-            )}
-          </ImageUploading>
-          {images.length === 0 ? <img src="/assets/images/file-preview.svg" className="m-auto w-full max-w-md" alt="" /> : ''}
+
+          <div className=" rounded-md border border-white-light bg-white px-6 py-3.5 text-center dark:border-dark dark:bg-[#1b2e4b] md:flex-row ltr:md:text-left rtl:md:text-right">
+            <label className="custom-file-container__custom-file"></label>
+            <input hidden type="file" className="custom-file-container__custom-file__custom-file-input" accept="image/*" />
+            <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
+            <ImageUploading value={images} onChange={onChange} maxNumber={maxNumber}>
+              {({ imageList, onImageUpload, onImageRemoveAll, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
+                <div className="upload__image-wrapper">
+                  <button className="custom-file-container__custom-file__custom-file-control" onClick={onImageUpload}>
+                    Choose File...
+                  </button>
+                  {imageList.map((image, index) => (
+                    <div key={index} className=" custom-file-container__image-preview relative">
+                      <img src={image.dataURL} alt="img" className="m-auto" />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </ImageUploading>
+            {images.length === 0 ? <img src="/assets/images/file-preview.svg" className="m-auto w-full max-w-md" alt="" /> : ''}
+          </div>
         </div>
       </div>
     </div>

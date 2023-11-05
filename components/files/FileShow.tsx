@@ -55,7 +55,6 @@ const FileShow: FC<Props> = ({ showDataFile }) => {
   };
   return (
     <div>
-      <h5 className="mb-6 text-lg font-semibold dark:text-white-light">Files</h5>
       <ul className="grid grid-cols-3 gap-4">
         {showDataFile?.map((item: any) => {
           const modifiedName = item.name.replace(/^uploads\/\d+-/, '');
@@ -106,8 +105,8 @@ const FileShow: FC<Props> = ({ showDataFile }) => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel as="div" className={`panel my-8 h-full max-h-[80vh] w-full ${className} overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark`}>
-                  <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
+                <Dialog.Panel as="div" className={`panel my-10 h-full max-h-[80vh] w-full ${className} overflow-y-auto rounded-lg border-0 p-0 text-black dark:text-white-dark`}>
+                  <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-5 dark:bg-[#121c2c]">
                     <div className="text-lg font-bold">{nameFile}</div>
                     <button type="button" className="text-white-dark hover:text-dark" onClick={() => setModal1(false)}>
                       <svg

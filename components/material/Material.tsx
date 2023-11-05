@@ -271,7 +271,7 @@ const Material: FC<Props> = ({ data, isLoading, refetch }) => {
                                 </>
                               )}
                               {user?.user_type === 3 && (
-                                <Link href={`/student/material/show/${uid}`} className="btn btn-outline-info btn-sm flex hover:text-primary">
+                                <Link href={`/student/material/show/${uid}`} className="btn btn-outline-info btn-sm flex">
                                   <svg width="20" height="20" className="h-4 w-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path
                                       opacity="0.5"
@@ -333,7 +333,7 @@ const Material: FC<Props> = ({ data, isLoading, refetch }) => {
                                     </div>
                                     <div className="flex-auto">
                                       <div className="mb-2 text-info">Subject</div>
-                                      <div>majaskfd</div>
+                                      <div>{record?.subject_name}</div>
                                     </div>
                                   </div>
                                 </div>
@@ -351,7 +351,7 @@ const Material: FC<Props> = ({ data, isLoading, refetch }) => {
                                     </div>
                                     <div className="flex-auto">
                                       <div className="mb-2 text-info">Subject</div>
-                                      <div>majaskfd</div>
+                                      <div>{record?.subject_name}</div>
                                     </div>
                                   </div>
                                 </div>
@@ -369,7 +369,7 @@ const Material: FC<Props> = ({ data, isLoading, refetch }) => {
                               </div>
                             )}
                             <div className="absolute bottom-0 mt-6 flex w-full gap-4 p-6 ltr:left-0 rtl:right-0">
-                              <Link href={`/teacher/material/edit/${record?.uid}`} type="button" className="btn btn-outline-info w-full">
+                              <Link href={`/teacher/material/show/${record?.uid}`} type="button" className="btn btn-outline-info w-full">
                                 Show
                               </Link>
                             </div>

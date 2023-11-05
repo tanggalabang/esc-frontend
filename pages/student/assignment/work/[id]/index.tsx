@@ -16,6 +16,7 @@ import { useAuth } from '@/pages/hooks/auth';
 import { useCreateStudentWorkMutation, useGetAllStudentWorkQuery } from '@/redux/features/student-work/studentWorkApi';
 import Link from 'next/link';
 import FileShow from '@/components/files/FileShow';
+import Swal from 'sweetalert2';
 
 const DynamicJoditEditor = dynamic(() => import('jodit-react'), {
   ssr: false,
@@ -129,7 +130,24 @@ const Add = () => {
     // Menunggu pembaruan state content selesai
     await setContent(updatedContent);
     // Kemudian, memanggil createAssignment dengan objek assignment yang diperbarui
-    await createStudentWork(updatedAssignment);
+    const showAlert = async (type: number) => {
+      if (type === 10) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          showCancelButton: true,
+          confirmButtonText: 'Send',
+          padding: '2em',
+          customClass: 'sweet-alerts',
+        }).then(async (result) => {
+          if (result.value) {
+            await createStudentWork(updatedAssignment);
+          }
+        });
+      }
+    };
+    showAlert(10);
 
     addItem(e);
   };
@@ -203,12 +221,12 @@ const Add = () => {
             {!matchingWork ? (
               <>
                 <div>
-                  <label htmlFor="currency">Content</label>
+                  <label className="mb-6 mt-4 text-lg font-bold text-white-dark">Content</label>
                   <DynamicJoditEditor value={contentReff.current} onChange={(newContent) => (contentReff.current = newContent)} />
                 </div>
 
                 <div className="mt-6">
-                  <label htmlFor="currency">Multiple File Upload</label>
+                  <label className="mb-6 mt-10 text-lg font-bold text-white-dark">Multiple File Upload</label>
                   <UploadFiles fileRef={fileRef} handleFileDrop={handleFileDrop} files={files} handleFileDelete={handleFileDelete} setFiles={setFiles} />
                 </div>
               </>
@@ -218,12 +236,15 @@ const Add = () => {
                 <h5 className="mb-6 text-lg font-semibold dark:text-white-light">Content</h5>
                 <div className="mb-6">{matchingWork?.content && <div>{HTMLReactParser(matchingWork?.content)}</div>}</div>
 
-                <hr />
-
                 {/* file upload */}
-                <div className="mb-6 mt-10">
-                  <FileShow showDataFile={showDataFile} />
-                </div>
+                {showDataFile?.length !== 0 && (
+                  <>
+                    <hr />
+                    <div className="mb-6 mt-10">
+                      <FileShow showDataFile={showDataFile} />
+                    </div>
+                  </>
+                )}
               </>
             )}
           </div>

@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 
 type Props = { showData?: any };
 
-const Profile: FC<Props> = ({ showData }) => {
+const ProfileDash2: FC<Props> = ({ showData }) => {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -171,8 +171,8 @@ const Profile: FC<Props> = ({ showData }) => {
 
   return (
     <>
-      <div className="mb-5 grid grid-cols-[1fr,3fr] gap-5">
-        <div className="panel">
+      <div className="mb-5 gap-5">
+        <div className="">
           <div className="mb-5 flex w-full items-center">
             <h5 className="mx-auto text-lg font-semibold dark:text-white-light">My Profile</h5>
           </div>
@@ -341,75 +341,9 @@ const Profile: FC<Props> = ({ showData }) => {
             </ul>
           </div>
         </div>
-        {/* right */}
-        <div>
-          <div className="panel">
-            <div className="mb-5 flex items-center">
-              <h5 className="mr-auto text-lg font-semibold dark:text-white-light">Edit Profile</h5>
-            </div>
-            <form encType="multipart/form-data" className="space-y-5" onSubmit={editItem}>
-              <div>
-                <label htmlFor="groupFname" className="text-white-dark">
-                  Name
-                </label>
-                <input type="text" id="name" className="form-input" value={data?.name} onChange={handleNameChange} />
-              </div>
-              <div>
-                <label htmlFor="ctnFile" className="text-white-dark">
-                  Profile Picture
-                </label>
-                <input
-                  className="rtl:file-ml-5 form-input p-0 file:border-0 file:bg-primary/90 file:px-4 file:py-2 file:font-semibold file:text-white file:hover:bg-primary ltr:file:mr-5"
-                  type="file"
-                  id="image"
-                  onChange={handleImageChange}
-                />
-              </div>
-              {/* button update profile */}
-              <div className="flex justify-between">
-                <button type="submit" className="btn btn-primary !mt-6">
-                  Submit
-                </button>
-                <button onClick={handleDelete} className="btn btn-outline-danger !mt-6">
-                  Delete Picture
-                </button>
-              </div>
-            </form>
-          </div>
-          <div className="panel mt-6 ">
-            <form className="space-y-5" onSubmit={changePassword}>
-              <div className="mb-5 flex items-center">
-                <h5 className="mr-auto text-lg font-semibold dark:text-white-light">Change Password</h5>
-              </div>
-              <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <label htmlFor="inputDefault" className="text-white-dark">
-                    Old Password
-                  </label>
-                  <input type="password" className="form-input" required value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} />
-                </div>
-                <div>
-                  <label htmlFor="inputDefault" className="text-white-dark">
-                    New Password
-                  </label>
-                  <input type="password" className="form-input" required value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
-                </div>
-                <div>
-                  <label htmlFor="inputDefault" className="text-white-dark">
-                    Confirm Password
-                  </label>
-                  <input type="password" className="form-input" required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-                </div>
-              </div>
-              <button type="submit" className="btn btn-primary !mt-6">
-                Submit
-              </button>
-            </form>
-          </div>
-        </div>
       </div>
     </>
   );
 };
 
-export default Profile;
+export default ProfileDash2;

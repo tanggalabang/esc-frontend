@@ -308,7 +308,7 @@ const Assignment: FC<Props> = ({ data, isLoading, refetch }) => {
                                   </svg>
                                 </button>
                                 <Tippy content="Student work" placement="bottom">
-                                  <Link href={`/teacher/assignment/work/students/${uid}`} className="flex hover:text-primary">
+                                  <Link href={`/teacher/assignment/work/students/${uid}`} className="flex hover:text-success">
                                     <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
                                       <path d="M4 6V19C4 20.6569 5.34315 22 7 22H17C18.6569 22 20 20.6569 20 19V9C20 7.34315 18.6569 6 17 6H4ZM4 6V5" stroke="currentColor" stroke-width="1.5" />
                                       <path
@@ -323,7 +323,7 @@ const Assignment: FC<Props> = ({ data, isLoading, refetch }) => {
                               </>
                             )}
                             {user?.user_type === 3 && (
-                              <Link href={`/student/assignment/show/${uid}`} className="btn btn-outline-info btn-sm flex hover:text-primary">
+                              <Link href={`/student/assignment/show/${uid}`} className="btn btn-outline-info btn-sm flex">
                                 <svg width="20" height="20" className="h-4 w-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                   <path
                                     opacity="0.5"

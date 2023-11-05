@@ -9,6 +9,7 @@ import UploadFiles from '@/components/upload-files/UploadFiles';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
 import RouteProtected from '@/components/route-protected/RouteProtected';
+import Link from 'next/link';
 
 const DynamicJoditEditor = dynamic(() => import('jodit-react'), {
   ssr: false,
@@ -172,14 +173,14 @@ const Edit = () => {
     <>
       <RouteProtected userType={2} />
       <div className="flex flex-col gap-2.5 xl:flex-row">
-        <div className="panel flex-1  py-6 ltr:xl:mr-6 rtl:xl:ml-6">
+        <div className="panel flex-1 px-10  py-6 ltr:xl:mr-6 rtl:xl:ml-6">
           <div>
-            <label htmlFor="currency">Content</label>
+            <label className="mb-6 mt-4 text-lg font-bold text-white-dark">Content</label>
             <DynamicJoditEditor value={itemsAssignment.content} onChange={(newContent) => (contentReff.current = newContent)} />
           </div>
 
           <div className="mt-6">
-            <label htmlFor="currency">Multiple File Upload</label>
+            <label className="mb-6 mt-10 text-lg font-bold text-white-dark">Multiple File Upload</label>
             <UploadFiles fileRef={fileRef} handleFileDrop={handleFileDrop} files={files} handleFileDelete={handleFileDelete} setFiles={setFiles} />
           </div>
         </div>
@@ -252,6 +253,13 @@ const Edit = () => {
                 </svg>
                 Save
               </button>
+              <Link href="/teacher/assignment" className="btn btn-outline-danger w-full gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M14.5 7L19.5 12L14.5 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M19.5 12L9.5 12C7.83333 12 4.5 13 4.5 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+                Back
+              </Link>
             </div>
           </div>
         </div>

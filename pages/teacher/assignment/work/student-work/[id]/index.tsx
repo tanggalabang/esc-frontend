@@ -134,11 +134,16 @@ const Add = () => {
                 {dataStudentWorkById?.content && <div>{HTMLReactParser(dataStudentWorkById?.content)}</div>}
               </div>
 
-              <hr />
               {/* file upload */}
-              <div className="mb-6 mt-10">
-                <FileShow showDataFile={showDataFile} />
-              </div>
+              {showDataFile?.length !== 0 && (
+                <>
+                  <hr />
+                  <div className="mb-6 mt-10">
+                    <h5 className="mb-6 text-lg font-semibold dark:text-white-light">Files</h5>
+                    <FileShow showDataFile={showDataFile} />
+                  </div>
+                </>
+              )}
             </>
           </div>
 

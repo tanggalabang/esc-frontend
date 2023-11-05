@@ -10,6 +10,13 @@ type Props = {
 
 // const Comment = (props: Props) => {
 const Comment: FC<Props> = ({ uid }) => {
+  useEffect(() => {
+    const updatedItems = {
+      ...items,
+      ass_uid: uid,
+    };
+    setItems(updatedItems);
+  }, [uid]);
   //--main variable for data
   const [items, setItems] = useState({
     message: '',
@@ -72,7 +79,7 @@ const Comment: FC<Props> = ({ uid }) => {
         scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
       }
     }
-  }, [showData, active]); // Pastikan untuk menyertakan data atau kondisi lain yang memicu perubahan
+  }, [active]); // Pastikan untuk menyertakan data atau kondisi lain yang memicu perubahan
 
   //--call refecth every 5 secods if active
   useEffect(() => {
@@ -176,9 +183,9 @@ const Comment: FC<Props> = ({ uid }) => {
           </div>
         </>
       ) : (
-        <div className=" rounded-md border border-white-light bg-white px-6 py-3.5 text-center dark:border-dark dark:bg-[#1b2e4b] md:flex-row ltr:md:text-left rtl:md:text-right">
-          <div className="flex items-center justify-center">
-            <button className="btn btn-info my-6" onClick={handleActive}>
+        <div className="rounded-md border border-white-light bg-white px-6 py-3.5 text-center dark:border-dark dark:bg-[#1b2e4b] md:flex-row ltr:md:text-left rtl:md:text-right">
+          <div className="my-2 flex items-center justify-center">
+            <button className="btn btn-primary" onClick={handleActive}>
               Start Commentar
             </button>
           </div>
@@ -230,7 +237,7 @@ export function BlogPostCommentItem({ uid, userId, refetch, parentId, parentCom,
 
       setItemsC({
         message: '',
-        ass_uid: 'CC46et0yg1lwvWaPEFqt',
+        ass_uid: uid,
         parent_id: parentId,
       });
       setOpenReply(false);
@@ -247,7 +254,7 @@ export function BlogPostCommentItem({ uid, userId, refetch, parentId, parentCom,
       setOpenReply(false);
       setItemsC({
         message: '',
-        ass_uid: 'CC46et0yg1lwvWaPEFqt',
+        ass_uid: uid,
         parent_id: parentId,
       });
     } else {
@@ -279,7 +286,7 @@ export function BlogPostCommentItem({ uid, userId, refetch, parentId, parentCom,
               sx={{
                 width: 48,
                 height: 48,
-                border: '4px solid blue', // Atur ukuran dan warna border sesuai kebutuhan
+                border: '3px solid blue', // Atur ukuran dan warna border sesuai kebutuhan
                 marginTop: '10px',
               }}
             />
