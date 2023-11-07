@@ -26,6 +26,13 @@ export const studentWorkApi = apiSlice.injectEndpoints({
         credentials: 'include' as const,
       }),
     }),
+    getAllStudentWorkForTeacher: builder.query({
+      query: () => ({
+        url: 'teacher-student-work',
+        method: 'GET',
+        credentials: 'include' as const,
+      }),
+    }),
     // editTeacher: builder.mutation({
     //   query: ({ id, data }) => ({
     //     url: `teacher/${id}`,
@@ -44,4 +51,4 @@ export const studentWorkApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useAddScoreStudentWorkMutation, useGetAllStudentWorkQuery, useCreateStudentWorkMutation } = studentWorkApi;
+export const { useGetAllStudentWorkForTeacherQuery, useAddScoreStudentWorkMutation, useGetAllStudentWorkQuery, useCreateStudentWorkMutation } = studentWorkApi;

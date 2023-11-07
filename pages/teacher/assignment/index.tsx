@@ -6,6 +6,7 @@ type Props = {};
 
 const index = (props: Props) => {
   const { isLoading, data, refetch } = useGetAllAssignmentByTeacherQuery({}, { refetchOnMountOrArgChange: true });
+  console.log(data);
 
   return (
     <>

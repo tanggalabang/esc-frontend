@@ -4,10 +4,10 @@ import { useState, useEffect, Fragment } from 'react';
 import sortBy from 'lodash/sortBy';
 import { useGetAllClassQuery } from '@/redux/features/class-subject/classSubjectApi';
 import RouteProtected from '@/components/route-protected/RouteProtected';
-import { studentWorkApi, useGetAllStudentWorkQuery } from '@/redux/features/student-work/studentWorkApi';
+import { studentWorkApi, useGetAllStudentWorkForTeacherQuery, useGetAllStudentWorkQuery } from '@/redux/features/student-work/studentWorkApi';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useGetAllAssignmentQuery } from '@/redux/features/assignment/assignmentApi';
+import { useGetAllAssignmentByTeacherQuery, useGetAllAssignmentQuery } from '@/redux/features/assignment/assignmentApi';
 
 //get id on server side
 export async function getServerSideProps(context: any) {
@@ -22,17 +22,28 @@ export async function getServerSideProps(context: any) {
 
 const WorkStudent = ({ id }: any) => {
   //SHOW
-  const { data: dataStudentWork, isLoading } = useGetAllStudentWorkQuery({}, { refetchOnMountOrArgChange: true });
+  const { data: dataStudentWork, isLoading } = useGetAllStudentWorkForTeacherQuery({}, { refetchOnMountOrArgChange: true });
 
   const dataStudentWorkById = dataStudentWork?.find((work: any) => work?.ass_id === id);
 
   //--get student with work
   const { data: dataStudentWithWork } = useGetAllStudentWithWorkQuery({}, { refetchOnMountOrArgChange: true });
 
-  const studentsWithWork = dataStudentWithWork && dataStudentWithWork.filter((i: any) => i.class_id === dataStudentWorkById?.class_id);
+  //--get assigmnet for show name and subjent
+  const { data: dataAssignment } = useGetAllAssignmentQuery({}, { refetchOnMountOrArgChange: true });
+
+  const dataAssignmentById = dataAssignment?.find((i: any) => i?.uid === id);
+
+  //--get assignmet for get class
+
+  // const studentsWithWork = dataStudentWithWork && dataStudentWithWork.filter((i: any) => i.class_id === dataStudentWorkById?.class_id);
+  const studentsWithWork = dataStudentWithWork && dataStudentWithWork.filter((i: any) => i.class_id === dataAssignmentById?.class_id);
 
   //--save to item
   const [items, setItems] = useState([]);
+  // console.log(dataStudentWithWork);
+  // console.log(dataStudentWorkById);//undifined
+  console.log(dataStudentWork); //undifined
 
   useEffect(() => {
     if (studentsWithWork) {
@@ -40,10 +51,6 @@ const WorkStudent = ({ id }: any) => {
     }
   }, [studentsWithWork]);
 
-  //--get assigmnet for show name and subjent
-  const { data: dataAssignment } = useGetAllAssignmentQuery({}, { refetchOnMountOrArgChange: true });
-
-  const dataAssignmentById = dataAssignment?.find((i: any) => i?.uid === id);
   //SHOW
 
   //SEARCH
@@ -91,9 +98,15 @@ const WorkStudent = ({ id }: any) => {
     }, 1000);
   };
 
-  const goBack = () => {
+  const goBack = async () => {
     router.back();
+    setTimeout(() => {
+      router.reload();
+    }, 1000);
   };
+
+  //get assignment for get due date
+  // const { isLoading, dataAssignment, refetch } = useGetAllAssignmentByTeacherQuery({}, { refetchOnMountOrArgChange: true });
 
   return (
     <>
@@ -164,7 +177,7 @@ const WorkStudent = ({ id }: any) => {
                         if (matchingWork) {
                           const createdTimes = matchingWork.created_at; // Convert the created_at timestamp to a Date object
 
-                          if (createdTimes > dataStudentWorkById?.created_at) {
+                          if (createdTimes < dataAssignmentById?.due_date) {
                             return (
                               <div className="flex justify-center">
                                 <span className="badge mr-3 mt-[-2px] bg-success text-center">Finish</span>
@@ -272,6 +285,13 @@ const WorkStudent = ({ id }: any) => {
                 />
               </div>
             </div>
+            <button onClick={goBack} className="btn btn-danger ml-auto mt-6 w-[200px]  gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M14.5 7L19.5 12L14.5 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M19.5 12L9.5 12C7.83333 12 4.5 13 4.5 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+              Back
+            </button>
           </div>
         )}
       </div>

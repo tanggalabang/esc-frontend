@@ -187,7 +187,7 @@ const Assignment: FC<Props> = ({ data, isLoading, refetch }) => {
                         if (matchingWork) {
                           const createdTimes = matchingWork.created_at; // Convert the created_at timestamp to a Date object
 
-                          if (createdTimes > due_date) {
+                          if (createdTimes < due_date) {
                             return (
                               <div className="flex justify-center">
                                 <span className="badge mr-3  bg-success text-center">Finish</span>

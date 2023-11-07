@@ -13,7 +13,7 @@ import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
 import RouteProtected from '@/components/route-protected/RouteProtected';
 import { useAuth } from '@/pages/hooks/auth';
-import { useAddScoreStudentWorkMutation, useCreateStudentWorkMutation, useGetAllStudentWorkQuery } from '@/redux/features/student-work/studentWorkApi';
+import { useAddScoreStudentWorkMutation, useCreateStudentWorkMutation, useGetAllStudentWorkForTeacherQuery, useGetAllStudentWorkQuery } from '@/redux/features/student-work/studentWorkApi';
 import Link from 'next/link';
 import FileShow from '@/components/files/FileShow';
 import { useGetAllStudentWithWorkQuery } from '@/redux/features/student/studentApi';
@@ -31,12 +31,14 @@ const Add = () => {
   const router = useRouter();
   const { id } = router.query;
 
+  console.log(id);
   //SHOW
   //--get file assignment by id url
   const { isLoading: loadingFile, data: dataFile, refetch: refetchFile } = useGetAllFilesQuery({}, { refetchOnMountOrArgChange: true });
 
   //--get student work
-  const { data: dataStudentWork, isLoading: loadingWork } = useGetAllStudentWorkQuery({}, { refetchOnMountOrArgChange: true });
+  const { data: dataStudentWork, isLoading: loadingWork } = useGetAllStudentWorkForTeacherQuery({}, { refetchOnMountOrArgChange: true });
+  console.log(dataStudentWork);
   //--find by id
   const dataStudentWorkById = dataStudentWork?.find((work: any) => work?.uid === id);
 
