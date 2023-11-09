@@ -98,7 +98,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     }
 
     // window.location.pathname = '/auth/login'
-    router.push('http://localhost:3001/home-3')
+    router.push('http://localhost:3001')
   }
 
   useEffect(() => {

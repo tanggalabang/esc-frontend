@@ -125,10 +125,10 @@ const Material: FC<Props> = ({ data, isLoading, refetch }) => {
           <>
             <div>
               <div className="invoice-table">
-                <div className="mb-4.5 flex flex-col gap-3 md:flex-row md:items-center">
-                  <div className="flex items-center gap-2">
+                <div className="mb-4.5 flex gap-3 md:flex-row md:items-center">
+                  <div className="flex w-full items-center gap-2">
                     {user?.user_type === 2 && (
-                      <Link href="/teacher/material/add" className="btn btn-primary gap-2">
+                      <Link href="/teacher/material/add" className="btn btn-primary w-full gap-2 sm:w-auto xl:w-auto">
                         <svg className="h-5 w-5" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
                           <line x1="12" y1="5" x2="12" y2="19"></line>
                           <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -138,7 +138,7 @@ const Material: FC<Props> = ({ data, isLoading, refetch }) => {
                     )}
                     {user?.user_type === 3 && <h2 className="text-xl">Material</h2>}
                   </div>
-                  <div className="ltr:ml-auto rtl:mr-auto">
+                  <div className="sm:ltr:ml-auto sm:rtl:mr-auto xl:ltr:ml-auto xl:rtl:mr-auto">
                     <button type="button" className={`btn btn-outline-primary p-2 ${value === 'list' && 'bg-primary text-white'}`} onClick={() => setValue('list')}>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5">
                         <path d="M2 5.5L3.21429 7L7.5 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -178,9 +178,12 @@ const Material: FC<Props> = ({ data, isLoading, refetch }) => {
                       </svg>
                     </button>
                   </div>
-                  <div>
+                  <div className="hidden sm:block xl:block">
                     <input type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
                   </div>
+                </div>
+                <div className="mb-6 sm:hidden xl:hidden">
+                  <input type="text" className="form-input w-full" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
                 </div>
               </div>
               <div className="datatables pagination-padding ">
@@ -369,7 +372,7 @@ const Material: FC<Props> = ({ data, isLoading, refetch }) => {
                               </div>
                             )}
                             <div className="absolute bottom-0 mt-6 flex w-full gap-4 p-6 ltr:left-0 rtl:right-0">
-                              <Link href={`/teacher/material/show/${record?.uid}`} type="button" className="btn btn-outline-info w-full">
+                              <Link href={`/student/material/show/${record?.uid}`} type="button" className="btn btn-outline-info w-full">
                                 Show
                               </Link>
                             </div>

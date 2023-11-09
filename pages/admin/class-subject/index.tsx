@@ -407,8 +407,8 @@ const index = (props: Props) => {
           </div>
         ))}
       {/* !only for admin */}
-      <div className="flex">
-        <div className="panel mr-3 flex-1 border-white-light px-0 dark:border-[#1b2e4b]">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+        <div className="panel col-span-1 border-white-light px-0 dark:border-[#1b2e4b]">
           {showLoading ? (
             <div className="flex items-center justify-center">
               <span className="m-auto mb-10 inline-block h-10 w-10 animate-spin rounded-full border-4 border-transparent border-l-primary align-middle"></span>
@@ -417,9 +417,9 @@ const index = (props: Props) => {
             <div>
               <div className="invoice-table">
                 <h5 className="mb-5 px-5 text-lg font-semibold">Class</h5>
-                <div className="mb-4.5 flex flex-col gap-5 px-5 md:flex-row md:items-center">
-                  <div className="flex items-center gap-2">
-                    <button onClick={() => setModalAdd(true)} className="btn btn-primary gap-2">
+                <div className="mb-4 grid grid-cols-1 gap-4 px-5 sm:grid-cols-2 xl:grid-cols-2">
+                  <div>
+                    <button onClick={() => setModalAdd(true)} className="btn btn-primary w-full gap-2">
                       <svg className="h-5 w-5" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -427,8 +427,8 @@ const index = (props: Props) => {
                       Add New
                     </button>
                   </div>
-                  <div className="ltr:ml-auto rtl:mr-auto">
-                    <input type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
+                  <div>
+                    <input type="text" className="form-input w-full" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
                   </div>
                 </div>
               </div>
@@ -690,7 +690,7 @@ const index = (props: Props) => {
             </div>
           )}
         </div>
-        <div className="panel ml-3 flex-1 border-white-light px-0 dark:border-[#1b2e4b]">
+        <div className="panel col-span-1 flex-1 border-white-light px-0 dark:border-[#1b2e4b]">
           {showLoadingSubject ? (
             <div className="flex items-center justify-center">
               <span className="m-auto mb-10 inline-block h-10 w-10 animate-spin rounded-full border-4 border-transparent border-l-primary align-middle"></span>
@@ -699,9 +699,10 @@ const index = (props: Props) => {
             <div>
               <div className="invoice-table">
                 <h5 className="mb-5 px-5 text-lg font-semibold">Subject</h5>
-                <div className="mb-4.5 flex flex-col gap-5 px-5 md:flex-row md:items-center">
+                {/* <div className="mb-4.5 flex flex-col gap-5 px-5 md:flex-row md:items-center"> */}
+                <div className="mb-4 grid grid-cols-1 gap-4 px-5 sm:grid-cols-2 xl:grid-cols-2">
                   <div className="flex items-center gap-2">
-                    <button onClick={() => setModalAddSubject(true)} className="btn btn-primary gap-2">
+                    <button onClick={() => setModalAddSubject(true)} className="btn btn-primary w-full gap-2">
                       <svg className="h-5 w-5" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -709,8 +710,8 @@ const index = (props: Props) => {
                       Add New
                     </button>
                   </div>
-                  <div className="ltr:ml-auto rtl:mr-auto">
-                    <input type="text" className="form-input w-auto" placeholder="Search..." value={searchSubject} onChange={(e) => setSearchSubject(e.target.value)} />
+                  <div>
+                    <input type="text" className="form-input w-full" placeholder="Search..." value={searchSubject} onChange={(e) => setSearchSubject(e.target.value)} />
                   </div>
                 </div>
               </div>

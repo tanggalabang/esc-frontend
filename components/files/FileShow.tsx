@@ -55,7 +55,7 @@ const FileShow: FC<Props> = ({ showDataFile }) => {
   };
   return (
     <div>
-      <ul className="grid grid-cols-3 gap-4">
+      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {showDataFile?.map((item: any) => {
           const modifiedName = item.name.replace(/^uploads\/\d+-/, '');
           // Memecah nama file berdasarkan titik (.)
@@ -72,14 +72,14 @@ const FileShow: FC<Props> = ({ showDataFile }) => {
                 handleClick(fileUrl, fileExtension, modifiedName);
               }}
             >
-              <div className="items-md-center flex flex-col rounded-md border border-white-light bg-white px-6 py-3.5 text-center dark:border-dark dark:bg-[#1b2e4b] md:flex-row ltr:md:text-left rtl:md:text-right">
+              <div className="items-md-center flex items-center rounded-md border border-white-light bg-white px-6 py-3.5 text-center dark:border-dark dark:bg-[#1b2e4b] md:flex-row ltr:md:text-left rtl:md:text-right">
                 <div className="ltr:sm:mr-4 rtl:sm:ml-4">
                   {/* <img alt="avatar" src={`/assets/images/profile.jpeg`} className="mx-auto h-11 w-11 rounded-full" /> */}
                   <>{fileType[fileExtension] || <FileIcon className="h-10 w-10" />}</>
                 </div>
-                <div className="flex flex-1 flex-col items-center justify-between md:flex-row">
-                  <div className="my-3 font-semibold md:my-0">
-                    <div className="text-base text-dark dark:text-[#bfc9d4]">{modifiedName}</div>
+                <div className="flex flex-1 flex-col md:flex-row">
+                  <div className="my-3 ml-2 font-semibold sm:ml-0 md:my-0 xl:ml-0">
+                    <div className="text-left text-base text-dark dark:text-[#bfc9d4]">{modifiedName}</div>
                     {/* <div className="text-xs text-white-dark">akjdflskdjfkj</div> */}
                   </div>
                 </div>

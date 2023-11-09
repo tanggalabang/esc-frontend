@@ -214,16 +214,16 @@ const TimesTable: FC<Props> = ({ data }) => {
 
   return (
     <>
-      <div className="grid grid-cols-[3fr,1fr] gap-6">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-4">
         {/* <div className={`panel mr-3 w-3/4 `}> */}
-        <div className="panel">
+        <div className="panel col-span-1  xl:col-span-3">
           {showLoadingTimes ? (
             <div className="flex items-center justify-center">
               <span className="m-auto mb-10 inline-block h-10 w-10 animate-spin rounded-full border-4 border-transparent border-l-primary align-middle"></span>
             </div>
           ) : (
-            <>
-              <form onSubmit={handleTimeTable}>
+            <div className="overflow-x-auto">
+              <form onSubmit={handleTimeTable} className=" w-[1000px] sm:w-auto xl:w-auto">
                 <div className="mt-2 ">
                   <div className="flex ">
                     <h5 className="  text-lg font-semibold text-primary">{itemsAddSubject.class}</h5>
@@ -375,12 +375,12 @@ const TimesTable: FC<Props> = ({ data }) => {
                   </button>
                 )}
               </form>
-            </>
+            </div>
           )}
         </div>
 
         {/* <div className={`panel ml-3 w-1/4`}> */}
-        <div className="panel">
+        <div className="panel col-span-1">
           {showLoading ? (
             <div className="flex items-center justify-center">
               <span className="m-auto mb-10 inline-block h-10 w-10 animate-spin rounded-full border-4 border-transparent border-l-primary align-middle"></span>

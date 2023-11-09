@@ -141,12 +141,13 @@ const Dashboard: React.FC = () => {
 
   return (
     // <div className="grid grid-cols-5 gap-6 p-4">
-    <div className="mb-6 grid grid-cols-4 gap-6">
-      <div className="col-span-3 grid grid-cols-3 gap-6">
-        <div className="panel col-span-3 grid grid-cols-3 gap-5  bg-gradient-to-r from-blue-500 to-blue-400 text-white">
-          <h5 className="col-span-3  mt-2 text-lg font-bold">{showClass?.name}</h5>
+    <div className="mb-6 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="col-span-1 grid grid-cols-1 gap-6 sm:col-span-2 xl:col-span-3 xl:grid-cols-3">
+        {/* <div className="panel col-span-3 grid grid-cols-3 gap-5  bg-gradient-to-r from-blue-500 to-blue-400 text-white"> */}
+        <div className="panel col-span-1 grid grid-cols-1 gap-5 bg-gradient-to-r from-blue-500 to-blue-400 pb-6 text-white sm:grid-cols-3 xl:col-span-3 xl:grid-cols-3">
+          <h5 className="col-span-1 mt-2  text-lg font-bold sm:col-span-3 xl:col-span-3">{showClass?.name}</h5>
           {/* student */}
-          <div className="col-span-1 flex h-[85px] rounded-md bg-white/30 p-4">
+          <div className="col-span-1 flex h-[85px] rounded-md bg-white/30 p-4 sm:col-span-1">
             <div className="mr-4 w-auto rounded-full bg-[#d9f2e6] p-3">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <circle cx="9" cy="6" r="4" stroke="#00ab55" stroke-width="1.5" />
@@ -166,7 +167,7 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
           {/* subject */}
-          <div className="col-span-1 flex  h-[85px] rounded-md  bg-white/30 p-4">
+          <div className="col-span-1 flex h-[85px] rounded-md bg-white/30 p-4 sm:col-span-1">
             <div className="mr-4 w-auto rounded-full bg-[#e3e7fc] p-3">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path
@@ -189,7 +190,7 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
           {/* classes */}
-          <div className="col-span-1 flex  h-[85px] rounded-md bg-white/30 p-4">
+          <div className="col-span-1 flex h-[85px] rounded-md bg-white/30 p-4 sm:col-span-1">
             <div className="mr-4 w-auto rounded-full bg-[#fbe5e6] p-3">
               <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none">
                 <path
@@ -221,12 +222,12 @@ const Dashboard: React.FC = () => {
             )}
           </div>
         </div>
-        <div className="col-span-3">
+        <div className="hidden xl:col-span-3 xl:block">
           <TimesTableDash3 />
         </div>
       </div>
 
-      <div className="col-span-1 grid grid-cols-1 gap-4">
+      <div className="col-span-1 grid grid-cols-1 gap-4 sm:col-span-2 sm:grid-cols-2 xl:col-span-1 xl:grid-cols-1">
         {/* User Visit */}
         <div className="panel col-span-1 bg-gradient-to-r from-cyan-500 to-cyan-400 text-white">
           <div className="flex justify-between">
@@ -289,7 +290,8 @@ const Dashboard: React.FC = () => {
           </div>
           <div className="badge mt-5 bg-white/30 text-center text-sm font-semibold">assignments </div>
         </div>
-        <div className="panel col-span-1 bg-gradient-to-r  !px-0 text-black">
+        {/* <div className="panel col-span-1 bg-gradient-to-r  !px-0 text-black"> */}
+        <div className="panel col-span-1 bg-gradient-to-r !px-0 text-black sm:col-span-2 xl:col-span-1">
           <ProfileDash2 showData={showData} />
         </div>
       </div>

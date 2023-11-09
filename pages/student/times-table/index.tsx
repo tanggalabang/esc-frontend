@@ -215,80 +215,87 @@ const index: FC<Props> = ({}) => {
             </div>
           ) : (
             <>
-              <form onSubmit={handleTimeTable}>
-                <div className="mt-2 ">
-                  <div className="flex ">
-                    <h5 className="  text-lg font-semibold text-primary">{itemsAddSubject.class}</h5>
-                    <ToggleButtonGroup style={{ height: '40px', marginLeft: 'auto', marginRight: '20px' }} value={periodDay} onChange={(e, v) => v && setPeriodDay(v)} exclusive>
-                      {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-                        <ToggleButton value={day} key={day}>
-                          {day}
-                        </ToggleButton>
-                      ))}
-                    </ToggleButtonGroup>
-                    {user?.user_type === 1 && items.length !== 0 && (
-                      <div
-                        className="btn btn-outline-primary inline-block"
-                        onClick={() => {
-                          addPeriod();
-                        }}
-                      >
-                        Add a Period
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="py-6">
-                    {itemsAddSubject.periods.length === 0 ? (
-                      <div className="w-full text-center text-[16px] text-white-dark">There are not times table on this day or this class</div>
-                    ) : (
-                      <>
-                        <div className="mb-[-5px] mt-2 flex justify-between gap-2 ">
-                          <div className="w-1/4">
-                            <label className="text-white-dark">Period</label>
-                          </div>
-                          <div className="w-1/4">
-                            <label className="text-white-dark">Subject</label>
-                          </div>
-                          <div className="w-1/4">
-                            <label className="text-white-dark">Teacher</label>
-                          </div>
-                          <div className="w-1/4">
-                            <label className="text-white-dark">Place</label>
-                          </div>
+              <div className="overflow-x-auto">
+                <form onSubmit={handleTimeTable} className=" w-[1000px] sm:w-auto xl:w-auto">
+                  <div className="mt-2 ">
+                    <div className="flex ">
+                      <h5 className="  text-lg font-semibold text-primary">{itemsAddSubject.class}</h5>
+                      <ToggleButtonGroup style={{ height: '40px', marginLeft: 'auto', marginRight: '20px' }} value={periodDay} onChange={(e, v) => v && setPeriodDay(v)} exclusive>
+                        {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+                          <ToggleButton value={day} key={day}>
+                            {day}
+                          </ToggleButton>
+                        ))}
+                      </ToggleButtonGroup>
+                      {user?.user_type === 1 && items.length !== 0 && (
+                        <div
+                          className="btn btn-outline-primary inline-block"
+                          onClick={() => {
+                            addPeriod();
+                          }}
+                        >
+                          Add a Period
                         </div>
-                        {itemsAddSubject.periods?.map((period: any, index: any) =>
-                          period.day === periodDay ? (
-                            <div key={`period-${index}`}>
-                              <div className="flex gap-2 py-2">
-                                <input
-                                  className="form-input cursor-not-allowed disabled:pointer-events-none disabled:bg-[#eee] dark:disabled:bg-[#1b2e4b]"
-                                  disabled
-                                  type="text"
-                                  value={period.number}
-                                />
-                                <input
-                                  className="form-input cursor-not-allowed disabled:pointer-events-none disabled:bg-[#eee] dark:disabled:bg-[#1b2e4b]"
-                                  disabled
-                                  type="text"
-                                  value={period.subject}
-                                />
-                                <input
-                                  className="form-input cursor-not-allowed disabled:pointer-events-none disabled:bg-[#eee] dark:disabled:bg-[#1b2e4b]"
-                                  disabled
-                                  type="text"
-                                  value={period.teacher}
-                                />
-                                <input className="form-input cursor-not-allowed disabled:pointer-events-none disabled:bg-[#eee] dark:disabled:bg-[#1b2e4b]" disabled type="text" value={period.place} />
-                              </div>
+                      )}
+                    </div>
+
+                    <div className="py-6">
+                      {itemsAddSubject.periods.length === 0 ? (
+                        <div className="w-full text-center text-[16px] text-white-dark">There are not times table on this day or this class</div>
+                      ) : (
+                        <>
+                          <div className="mb-[-5px] mt-2 flex justify-between gap-2 ">
+                            <div className="w-1/4">
+                              <label className="text-white-dark">Period</label>
                             </div>
-                          ) : null
-                        )}
-                      </>
-                    )}
+                            <div className="w-1/4">
+                              <label className="text-white-dark">Subject</label>
+                            </div>
+                            <div className="w-1/4">
+                              <label className="text-white-dark">Teacher</label>
+                            </div>
+                            <div className="w-1/4">
+                              <label className="text-white-dark">Place</label>
+                            </div>
+                          </div>
+                          {itemsAddSubject.periods?.map((period: any, index: any) =>
+                            period.day === periodDay ? (
+                              <div key={`period-${index}`}>
+                                <div className="flex gap-2 py-2">
+                                  <input
+                                    className="form-input cursor-not-allowed disabled:pointer-events-none disabled:bg-[#eee] dark:disabled:bg-[#1b2e4b]"
+                                    disabled
+                                    type="text"
+                                    value={period.number}
+                                  />
+                                  <input
+                                    className="form-input cursor-not-allowed disabled:pointer-events-none disabled:bg-[#eee] dark:disabled:bg-[#1b2e4b]"
+                                    disabled
+                                    type="text"
+                                    value={period.subject}
+                                  />
+                                  <input
+                                    className="form-input cursor-not-allowed disabled:pointer-events-none disabled:bg-[#eee] dark:disabled:bg-[#1b2e4b]"
+                                    disabled
+                                    type="text"
+                                    value={period.teacher}
+                                  />
+                                  <input
+                                    className="form-input cursor-not-allowed disabled:pointer-events-none disabled:bg-[#eee] dark:disabled:bg-[#1b2e4b]"
+                                    disabled
+                                    type="text"
+                                    value={period.place}
+                                  />
+                                </div>
+                              </div>
+                            ) : null
+                          )}
+                        </>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
             </>
           )}
         </div>

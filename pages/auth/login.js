@@ -84,15 +84,20 @@ const Login = () => {
         <div className="flex min-h-screen">
           <div className="hidden min-h-screen w-1/2 flex-col  items-center justify-center bg-gradient-to-t from-[#ff1361bf] to-[#44107A] p-4 text-white dark:text-black lg:flex">
             <div className="mx-auto mb-5 w-full">
-              <img src="/assets/images/auth-cover.svg" alt="coming_soon" className="mx-auto lg:max-w-[370px] xl:max-w-[500px]" />
+              <img src="/assets/images/v-image.png" alt="coming_soon" className="mx-auto lg:max-w-[370px] xl:max-w-[650px]" />
             </div>
+            <br />
+            <br />
             <h3 className="mb-4 text-center text-3xl font-bold">Join the community of expert developers</h3>
             <p>It is easy to setup with great customer experience. Start your 7-day free trial</p>
           </div>
-          <div className="relative flex w-full items-center justify-center lg:w-1/2">
-            <div className="max-w-[480px] p-5 md:p-10">
-              <h2 className="mb-3 text-3xl font-bold">Sign In</h2>
-              <p className="mb-7">Enter your email and password to login</p>
+          <div className="relative flex w-full items-center xl:bg-gradient-to-t xl:from-[#ffffff] xl:to-[#ffffff] bg-gradient-to-t from-[#ff1361bf] to-[#44107A] justify-center lg:w-1/2">
+            <div className="w-[480px] xl:block hidden p-5 md:p-10 mx-6">
+              <div className='flex justify-center'>
+                <img className="inline-block ml-[-20px] w-16 flex-none" src="/assets/images/logo-esc.png" alt="logo" />
+                <h2 className="mt-4 text-3xl font-bold">Sign In</h2>
+              </div>
+              <p className="mb-8 text-center">Enter your email and password to login</p>
               <form onSubmit={submitForm}>
                 {/* Email Address */}
                 <div>
@@ -161,7 +166,7 @@ const Login = () => {
                   </button>
                 </div>
               </form>
-              <div className="relative my-7 h-5 text-center before:absolute before:inset-0 before:m-auto before:h-[1px] before:w-full before:bg-[#ebedf2]  dark:before:bg-[#253b5c]">
+              {/* <div className="relative my-7 h-5 text-center before:absolute before:inset-0 before:m-auto before:h-[1px] before:w-full before:bg-[#ebedf2]  dark:before:bg-[#253b5c]">
                 <div className="relative z-[1] inline-block bg-[#fafafa] px-2 font-bold text-white-dark dark:bg-[#060818]">
                   <span>OR</span>
                 </div>
@@ -237,7 +242,90 @@ const Login = () => {
                 <Link href="/auth/register" className="font-bold text-primary hover:underline ltr:ml-1 rtl:mr-1">
                   Sign Up
                 </Link>
-              </p>
+              </p> */}
+              <br />
+              <br />
+              <br />
+              <br />
+            </div>
+            <div className="w-[480px] xl:hidden p-5 md:p-10 mx-6 panel bg-white/40">
+              <div className='flex justify-center'>
+                <img className="inline-block ml-[-20px] w-16 flex-none" src="/assets/images/logo-esc.png" alt="logo" />
+                <h2 className="mt-4 text-3xl font-bold">Sign In</h2>
+              </div>
+              <p className="mb-8 text-center">Enter your email and password to login</p>
+              <form onSubmit={submitForm}>
+                {/* Email Address */}
+                <div>
+                  <label htmlFor="email">Email</label>
+                  <input
+                    id="email"
+                    type="email"
+                    value={email}
+                    className="form-input"
+                    onChange={event => setEmail(event.target.value)}
+                    required
+                    autoFocus
+                    placeholder="Enter Email"
+                  />
+                  <InputError messages={errors.email} className="mt-2" />
+                </div>
+                {/* Password */}
+                <div className="mt-4">
+                  <label htmlFor="password">Password</label>
+                  <input
+                    id="password"
+                    type="password"
+                    value={password}
+                    className="form-input"
+                    onChange={event => setPassword(event.target.value)}
+                    required
+                    autoComplete="current-password"
+                    placeholder="Enter Password"
+                  />
+                  <InputError
+                    messages={errors.password}
+                    className="mt-2"
+                  />
+                </div>
+                {/* Remember Me */}
+                <div className='flex justify-between'>
+                  <div className="block mt-4">
+                    <label
+                      htmlFor="remember_me"
+                      className="cursor-pointer">
+                      <input
+                        id="remember_me"
+                        type="checkbox"
+                        name="remember"
+                        className="form-checkbox"
+                        onChange={event =>
+                          setShouldRemember(event.target.checked)
+                        }
+                      />
+                      <span className="text-white">
+                        Remember me
+                      </span>
+                    </label>
+                  </div>
+                  <div className='block mt-4'>
+                    <Link
+                      href="/auth/forgot-password"
+                      className="text-primary underline">
+                      Forgot you password?
+                    </Link>
+                  </div>
+                </div>
+                <div className="flex items-center justify-end mt-4">
+                  <button type="submit" className="btn btn-primary w-full">
+                    SIGN IN
+                  </button>
+                </div>
+              </form>
+              <br />
+              <br />
+              <br />
+              <br />
             </div>
           </div>
         </div>

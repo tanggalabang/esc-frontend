@@ -95,25 +95,29 @@ const Show = ({ params }: any) => {
               <table className="text-left">
                 <tr>
                   <th className="py-1 text-white-dark">Name</th>
-                  <td>: {showData?.name}</td>
+                  <td className="pl-2">:</td>
+                  <td className="pl-2">{showData?.name}</td>
                 </tr>
                 <tr>
                   <th className="py-1 text-white-dark">Class</th>
-                  <td>: {showData?.class_name}</td>
+                  <td className="pl-2">:</td>
+                  <td className="pl-2">{showData?.class_name}</td>
                 </tr>
                 <tr>
                   <th className="py-1 text-white-dark">Subject</th>
-                  <td>: {showData?.subject_name}</td>
+                  <td className="pl-2">:</td>
+                  <td className="pl-2">{showData?.subject_name}</td>
                 </tr>
                 <tr>
                   <th className="py-1 text-white-dark">Due Date</th>
-                  <td>: {showData?.due_date}</td>
+                  <td className="pl-2">:</td>
+                  <td className="pl-2">{showData?.due_date}</td>
                 </tr>
               </table>
             </div>
             <div className="panel">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-1">
-                <Link href="/teacher/assignment" className="btn btn-outline-danger w-full gap-2">
+                <Link href="/teacher/assignment" className="btn btn-outline-danger w-full gap-2 sm:col-span-2">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
                     <path d="M14.5 7L19.5 12L14.5 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                     <path d="M19.5 12L9.5 12C7.83333 12 4.5 13 4.5 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />

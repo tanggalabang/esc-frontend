@@ -134,10 +134,10 @@ const Assignment: FC<Props> = ({ data, isLoading, refetch }) => {
         ) : (
           <div>
             <div className="invoice-table">
-              <div className="mb-4.5 flex flex-col gap-5 md:flex-row md:items-center">
-                <div className="flex items-center gap-2">
+              <div className="mb-4.5 flex gap-5 md:flex-row md:items-center">
+                <div className="flex w-full items-center gap-2 sm:w-auto xl:w-auto">
                   {user?.user_type === 2 && (
-                    <Link href="/teacher/assignment/add" className="btn btn-primary gap-2">
+                    <Link href="/teacher/assignment/add" className="btn btn-primary w-full gap-2 sm:w-auto xl:w-auto">
                       <svg className="h-5 w-5" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -147,7 +147,7 @@ const Assignment: FC<Props> = ({ data, isLoading, refetch }) => {
                   )}
                   {user?.user_type === 3 && <h2 className="text-xl">Assignment</h2>}
                 </div>
-                <div className="ltr:ml-auto rtl:mr-auto">
+                <div className="sm:ltr:ml-auto sm:rtl:mr-auto xl:ltr:ml-auto xl:rtl:mr-auto">
                   <input type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
                 </div>
               </div>

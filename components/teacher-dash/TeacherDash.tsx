@@ -415,15 +415,15 @@ const TeacherDash = (props: Props) => {
             <div className="invoice-table">
               <h5 className="mb-5 px-5 text-lg font-semibold">Teacher</h5>
               <div className="mb-4.5 flex flex-col gap-5 px-5 md:flex-row md:items-center">
-                <div className="flex items-center gap-2">
-                  <button onClick={() => setModalAdd(true)} className="btn btn-primary gap-2">
+                <div className="grid grid-cols-2 items-center gap-2 xl:flex">
+                  <button onClick={() => setModalAdd(true)} className="btn btn-primary col-span-1 gap-2">
                     <svg className="h-5 w-5" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
                       <line x1="12" y1="5" x2="12" y2="19"></line>
                       <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
                     Add New
                   </button>
-                  <button type="button" className="btn btn-success gap-2" onClick={() => setModalExcel(true)}>
+                  <button type="button" className="btn btn-success col-span-1 gap-2" onClick={() => setModalExcel(true)}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5">
                       <path
                         opacity="0.5"
@@ -438,8 +438,8 @@ const TeacherDash = (props: Props) => {
                     Import Excel
                   </button>
                 </div>
-                <div className="ltr:ml-auto rtl:mr-auto">
-                  <input type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
+                <div className="sm:ltr:ml-auto sm:rtl:mr-auto xl:ltr:ml-auto xl:rtl:mr-auto">
+                  <input type="text" className="form-input w-full sm:w-auto xl:w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
                 </div>
               </div>
               <div className="mb-4 flex items-center justify-between px-5">

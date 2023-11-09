@@ -37,7 +37,7 @@ const RecoverIdBox = () => {
       <div className="panel m-6 w-full max-w-lg sm:w-[480px]">
         <h2 className="mb-3 text-2xl font-bold">Password Reset</h2>
         <form className="space-y-5" onSubmit={submitForm}>
-          <div>
+          {/* <div>
             <label htmlFor="email">Email</label>
             <input
               id="email"
@@ -50,7 +50,7 @@ const RecoverIdBox = () => {
               required
               autoFocus
             />
-          </div>
+          </div> */}
           <div>
             <label htmlFor="email">Password</label>
             <input

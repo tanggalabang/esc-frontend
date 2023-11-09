@@ -44,10 +44,10 @@ const Dashboard: React.FC = () => {
 
   return (
     // <div className="grid grid-cols-5 gap-6 p-4">
-    <div className="mb-6 grid grid-cols-5 gap-6">
-      <div className="col-span-4 grid grid-cols-4 gap-6">
-        {/* User Visit */}
-        <div className="col-span-4 grid grid-cols-4 gap-6 text-white">
+    <div className="mb-6 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-5">
+      <div className="col-span-1 grid grid-cols-1 gap-6 sm:col-span-2 sm:grid-cols-2 xl:col-span-4 xl:grid-cols-4">
+        <div className="col-span-1 grid grid-cols-1 gap-6 text-white sm:col-span-2 sm:grid-cols-2 xl:col-span-4 xl:grid-cols-4">
+          {/* User Visit */}
           <div className="panel col-span-1 bg-gradient-to-r from-cyan-500 to-cyan-400">
             <div className="flex justify-between">
               <div className="text-md font-semibold ltr:mr-1 rtl:ml-1">Total of Teacher</div>
@@ -169,20 +169,21 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="panel col-span-4">
+        <div className="panel col-span-1 hidden sm:col-span-2 sm:block xl:col-span-4 xl:block">
           <TimesTableDash data={data} />
         </div>
 
-        <div className="panel col-span-2 !px-0">
+        <div className="panel col-span-1 !px-0 sm:col-span-2 xl:col-span-2">
           <TeacherDash />
         </div>
-        <div className="panel col-span-2 !px-0">
+        <div className="panel col-span-1 !px-0 sm:col-span-2 xl:col-span-2">
           <StudentDash />
         </div>
       </div>
 
-      <div className="col-span-1 grid grid-cols-1 gap-4">
-        <div className="panel col-span-1 bg-gradient-to-r from-[#4361ee] to-[#190ca5] !px-0 text-white">
+      {/* right */}
+      <div className="col-span-1 grid grid-cols-1 gap-4 sm:col-span-2 sm:grid-cols-2 xl:col-span-1 xl:grid-cols-1">
+        <div className="panel col-span-1 bg-gradient-to-r from-[#4361ee] to-[#190ca5] !px-0 text-white sm:col-span-2 xl:col-span-1">
           <ProfileDash />
         </div>
         <div className="panel col-span-1 !px-0">

@@ -171,8 +171,8 @@ const Profile: FC<Props> = ({ showData }) => {
 
   return (
     <>
-      <div className="mb-5 grid grid-cols-[1fr,3fr] gap-5">
-        <div className="panel">
+      <div className="mb-5 grid grid-cols-1 gap-5 sm:grid-cols-3 xl:grid-cols-4">
+        <div className="panel col-span-1">
           <div className="mb-5 flex w-full items-center">
             <h5 className="mx-auto text-lg font-semibold dark:text-white-light">My Profile</h5>
           </div>
@@ -342,7 +342,7 @@ const Profile: FC<Props> = ({ showData }) => {
           </div>
         </div>
         {/* right */}
-        <div>
+        <div className="col-span-1 sm:col-span-2 xl:col-span-3">
           <div className="panel">
             <div className="mb-5 flex items-center">
               <h5 className="mr-auto text-lg font-semibold dark:text-white-light">Edit Profile</h5>
@@ -381,7 +381,7 @@ const Profile: FC<Props> = ({ showData }) => {
               <div className="mb-5 flex items-center">
                 <h5 className="mr-auto text-lg font-semibold dark:text-white-light">Change Password</h5>
               </div>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid-col-1 grid gap-4 xl:grid-cols-3">
                 <div>
                   <label htmlFor="inputDefault" className="text-white-dark">
                     Old Password

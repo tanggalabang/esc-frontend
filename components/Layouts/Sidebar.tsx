@@ -9,6 +9,7 @@ import AnimateHeight from 'react-animate-height';
 import { IRootState } from '../../store';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useGetAllClassQuery } from '@/redux/features/class-subject/classSubjectApi';
 
 const Sidebar = () => {
   const router = useRouter();
@@ -83,14 +84,33 @@ const Sidebar = () => {
     showAlert(10);
   };
 
+  //SHOW PROFILE
+
+  const { data: dataClass } = useGetAllClassQuery({}, { refetchOnMountOrArgChange: true });
+  const itemClass = dataClass && dataClass.find((i: any) => i.id === user.class_id);
+
+  //--show profile image
+  const [profileImage, setProfileImage] = useState('');
+
+  useEffect(() => {
+    if (user?.profile_pic != null) {
+      const fullImageUrl = `${process.env.NEXT_PUBLIC_URL}${user?.profile_pic}`;
+      setProfileImage(fullImageUrl);
+    } else {
+      const fullImageUrl = '/assets/images/profile-default.jpg';
+      setProfileImage(fullImageUrl);
+    }
+  }, [user]);
+  ///SHOW PROFILE
+
   return (
     <div className={semidark ? 'dark' : ''}>
       <nav className={`sidebar fixed bottom-0 top-0 z-50 h-full min-h-screen w-[260px] shadow-[5px_0_25px_0_rgba(94,92,154,0.1)] transition-all duration-300 ${semidark ? 'text-white-dark' : ''}`}>
         <div className="h-full bg-white dark:bg-black">
           <div className="flex items-center justify-between px-4 py-3">
             <Link href="/" className="main-logo flex shrink-0 items-center">
-              <img className="ml-[5px] w-8 flex-none" src="/assets/images/logo.svg" alt="logo" />
-              <span className="align-middle text-2xl font-semibold ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light lg:inline">{t('VRISTO')}</span>
+              <img className="ml-[5px] w-10 flex-none" src="/assets/images/logo-esc.png" alt="logo" />
+              <span className="align-middle text-2xl font-bold ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light lg:inline">{t('ESC')}</span>
             </Link>
 
             <button
@@ -104,6 +124,20 @@ const Sidebar = () => {
               </svg>
             </button>
           </div>
+
+          <br />
+          <div className="flex flex-col items-center justify-center">
+            <img src={profileImage} alt="img" className="mb-5 h-20 w-20 rounded-full  object-cover" />
+            <p className="text-center text-lg font-semibold text-primary">{user?.name}</p>
+          </div>
+          <ul className="m-auto mb-2 mt-1 flex flex-col items-center space-y-4 font-semibold text-white-dark">
+            <li className=" rounded px-1 text-sm">
+              {user?.user_type == 1 && <span>Admin e-SchoolConnet</span>}
+              {user?.user_type == 2 && <span>Teacher e-SchoolConnet</span>}
+              {user?.user_type == 3 && <span>Student e-SchoolConnet</span>}
+            </li>
+          </ul>
+
           <PerfectScrollbar className="relative h-[calc(100vh-80px)]">
             <ul className="relative space-y-0.5 p-4 py-0 font-semibold">
               <br />

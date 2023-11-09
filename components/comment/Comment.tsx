@@ -170,11 +170,11 @@ const Comment: FC<Props> = ({ uid }) => {
                   value={items.message}
                   onChange={(e: any) => setItems({ ...items, message: e.target.value })}
                 ></textarea>
-                <div className="flex justify-between">
-                  <button className="btn btn-outline-danger" onClick={handleActive}>
+                <div className="flex justify-between gap-4">
+                  <button className="btn btn-outline-danger w-full sm:w-auto xl:w-auto" onClick={handleActive}>
                     End Section
                   </button>
-                  <button className="btn btn-primary" onClick={handleSend}>
+                  <button className="btn btn-primary w-full sm:w-auto xl:w-auto" onClick={handleSend}>
                     Send
                   </button>
                 </div>

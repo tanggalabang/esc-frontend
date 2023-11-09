@@ -70,7 +70,7 @@ const Register = () => {
             <p>It is easy to setup with great customer experience. Start your 7-day free trial</p>
           </div>
           <div className="relative flex w-full items-center justify-center lg:w-1/2">
-            <div className="max-w-[480px] p-5 md:p-10">
+            <div className="w-[480px] p-5 md:p-10">
               <h2 className="mb-3 text-3xl font-bold">Sign Up</h2>
               <p className="mb-7">Enter your email and password to register</p>
               <form onSubmit={submitForm}>
