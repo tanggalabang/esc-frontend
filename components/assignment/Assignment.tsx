@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import Link from 'next/link';
 import React, { FC, useEffect, useState, Fragment } from 'react';
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
@@ -75,7 +76,8 @@ const Assignment: FC<Props> = ({ data, isLoading, refetch }) => {
     direction: 'asc',
   });
   useEffect(() => {
-    setInitialRecords(sortBy(rowData, 'created_at'));
+    const reversedData = sortBy(rowData, 'created_at');
+    setInitialRecords(reversedData.reverse());
   }, [items]);
   useEffect(() => {
     setPage(1);
@@ -165,11 +167,29 @@ const Assignment: FC<Props> = ({ data, isLoading, refetch }) => {
                       accessor: 'class_name',
                       title: 'Class',
                       sortable: true,
+                      hidden: user?.user_type === 3,
                     },
                     {
                       accessor: 'subject_name',
                       title: 'Subject',
                       sortable: true,
+                    },
+                    {
+                      accessor: 'created_at',
+                      title: 'Created At',
+                      sortable: true,
+                      render: ({ created_at }) => {
+                        const createdAtDate = new Date(created_at);
+
+                        // Gunakan fungsi format dari date-fns untuk memformat tanggal
+                        const formattedDate = format(createdAtDate, 'yyyy-MM-dd HH:mm:ss');
+
+                        return (
+                          <div>
+                            <p>{formattedDate}</p>
+                          </div>
+                        );
+                      },
                     },
                     {
                       accessor: 'due_date',

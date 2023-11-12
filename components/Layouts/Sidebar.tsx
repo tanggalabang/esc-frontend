@@ -132,10 +132,17 @@ const Sidebar = () => {
           </div>
           <ul className="m-auto mb-2 mt-1 flex flex-col items-center space-y-4 font-semibold text-white-dark">
             <li className=" rounded px-1 text-sm">
-              {user?.user_type == 1 && <span>Admin e-SchoolConnet</span>}
-              {user?.user_type == 2 && <span>Teacher e-SchoolConnet</span>}
-              {user?.user_type == 3 && <span>Student e-SchoolConnet</span>}
+              {user?.user_type == 1 && <span>Admin e-SchoolConnect</span>}
+              {user?.user_type == 2 && <span>Teacher e-SchoolConnect</span>}
+              {user?.user_type == 3 && <span>Student e-SchoolConnect</span>}
             </li>
+
+            {user?.user_type == 3 && (
+              <li className=" !mt-[7px] rounded px-1 text-sm">
+                <span className="badge m-1 mx-auto whitespace-nowrap bg-info text-center">{itemClass?.name}</span>
+                {/* <span>{itemClass?.name}</span> */}
+              </li>
+            )}
           </ul>
 
           <PerfectScrollbar className="relative h-[calc(100vh-80px)]">

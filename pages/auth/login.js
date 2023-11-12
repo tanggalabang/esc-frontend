@@ -84,12 +84,13 @@ const Login = () => {
         <div className="flex min-h-screen">
           <div className="hidden min-h-screen w-1/2 flex-col  items-center justify-center bg-gradient-to-t from-[#ff1361bf] to-[#44107A] p-4 text-white dark:text-black lg:flex">
             <div className="mx-auto mb-5 w-full">
-              <img src="/assets/images/v-image.png" alt="coming_soon" className="mx-auto lg:max-w-[370px] xl:max-w-[650px]" />
+              {/* <img src="/assets/images/bg.png" alt="coming_soon" className="mx-auto lg:max-w-[370px] xl:max-w-[650px]" /> */}
+              <img src="/assets/images/auth-cover.svg" alt="coming_soon" className="mx-auto lg:max-w-[370px] xl:max-w-[500px]" />
             </div>
             <br />
             <br />
-            <h3 className="mb-4 text-center text-3xl font-bold">Join the community of expert developers</h3>
-            <p>It is easy to setup with great customer experience. Start your 7-day free trial</p>
+            <h3 className="mb-4 text-center text-3xl font-bold">Come on, come in now!</h3>
+            <p>It's time to continue exploring the world of knowledge.</p>
           </div>
           <div className="relative flex w-full items-center xl:bg-gradient-to-t xl:from-[#ffffff] xl:to-[#ffffff] bg-gradient-to-t from-[#ff1361bf] to-[#44107A] justify-center lg:w-1/2">
             <div className="w-[480px] xl:block hidden p-5 md:p-10 mx-6">

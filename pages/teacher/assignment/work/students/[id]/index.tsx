@@ -33,6 +33,7 @@ const WorkStudent = ({ id }: any) => {
   const { data: dataAssignment } = useGetAllAssignmentQuery({}, { refetchOnMountOrArgChange: true });
 
   const dataAssignmentById = dataAssignment?.find((i: any) => i?.uid === id);
+  console.log(dataAssignmentById);
 
   //--get assignmet for get class
 
@@ -43,7 +44,7 @@ const WorkStudent = ({ id }: any) => {
   const [items, setItems] = useState([]);
   // console.log(dataStudentWithWork);
   // console.log(dataStudentWorkById);//undifined
-  console.log(dataStudentWork); //undifined
+  // console.log(dataStudentWork); //undifined
 
   useEffect(() => {
     if (studentsWithWork) {
@@ -128,6 +129,11 @@ const WorkStudent = ({ id }: any) => {
                       {dataAssignmentById?.subject_name}
                     </p>
                   </li>
+                  <li className="bg-[#dbdde2] dark:bg-[#1b2e4b]">
+                    <p className="relative flex h-full items-center p-1.5  px-3 before:absolute before:inset-y-0 before:z-[1] before:m-auto before:h-0 before:w-0 before:border-[16px] before:border-l-[15px] before:border-r-0 before:border-b-transparent before:border-l-[#dbdde2] before:border-t-transparent hover:text-primary/70 ltr:pl-6 ltr:before:-right-[15px] rtl:pr-6 rtl:before:-left-[15px] rtl:before:rotate-180 dark:before:border-l-[#1b2e4b] dark:hover:text-white-dark/70">
+                      {dataAssignmentById?.class_name}
+                    </p>
+                  </li>
                 </ol>
                 <div className="ltr:ml-auto rtl:mr-auto">
                   <input type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
@@ -161,10 +167,10 @@ const WorkStudent = ({ id }: any) => {
                       accessor: 'email',
                       sortable: true,
                     },
-                    {
-                      accessor: 'class',
-                      sortable: true,
-                    },
+                    // {
+                    //   accessor: 'class',
+                    //   sortable: true,
+                    // },
 
                     {
                       accessor: 'student_work', // Access the student_work array

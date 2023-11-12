@@ -172,7 +172,7 @@ const Profile: FC<Props> = ({ showData }) => {
   return (
     <>
       <div className="mb-5 grid grid-cols-1 gap-5 sm:grid-cols-3 xl:grid-cols-4">
-        <div className="panel col-span-1">
+        <div className="panel col-span-1 px-10">
           <div className="mb-5 flex w-full items-center">
             <h5 className="mx-auto text-lg font-semibold dark:text-white-light">My Profile</h5>
           </div>
@@ -181,7 +181,7 @@ const Profile: FC<Props> = ({ showData }) => {
               <img src={profileImage} alt="img" className="mb-5 h-24 w-24 rounded-full  object-cover" />
               <p className="text-center text-xl font-semibold text-primary">{user?.name}</p>
             </div>
-            <ul className="m-auto mt-5 flex max-w-[160px] flex-col items-center space-y-4 font-semibold text-white-dark">
+            <ul className="m-auto mt-5 flex flex-col items-center space-y-4 font-semibold text-white-dark">
               <li className="!mb-[-8px] flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                   <path
@@ -224,13 +224,13 @@ const Profile: FC<Props> = ({ showData }) => {
                     {showData?.subject?.length === 0 ? (
                       <span className="text-[14px] text-white-dark">There are not subject</span>
                     ) : (
-                      <>
+                      <div className="grid grid-cols-1">
                         {showData?.subject?.map((subject: any) => (
-                          <span key={subject.id} className="badge m-1 whitespace-nowrap bg-info">
+                          <span key={subject.id} className="badge m-1 mx-auto whitespace-nowrap bg-info text-center">
                             {subject.name}
                           </span>
                         ))}
-                      </>
+                      </div>
                     )}
                   </li>
                   <li className="!mb-[-8px] !mt-6 flex items-center">
@@ -249,13 +249,13 @@ const Profile: FC<Props> = ({ showData }) => {
                     {showData?.classes?.length === 0 ? (
                       <span className="text-[14px] text-white-dark">There are not classes</span>
                     ) : (
-                      <>
+                      <div className="grid grid-cols-1">
                         {showData?.classes?.map((classes: any) => (
-                          <span key={classes.id} className="badge badge-outline-info m-1 whitespace-nowrap">
+                          <span key={classes.id} className="badge badge-outline-info m-1 mx-auto whitespace-nowrap">
                             {classes.name}
                           </span>
                         ))}
-                      </>
+                      </div>
                     )}
                   </li>
                 </>
@@ -303,7 +303,9 @@ const Profile: FC<Props> = ({ showData }) => {
                       />
                     </svg>
                   </li>
-                  <li>{user?.nis}</li>
+                  <li>
+                    <div className="text-center">{user?.nis}</div>
+                  </li>
                   <li className="!mb-[-8px] !mt-6 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 22 21" fill="none" className="h-5 w-5">
                       <path
@@ -316,7 +318,9 @@ const Profile: FC<Props> = ({ showData }) => {
                       />
                     </svg>
                   </li>
-                  <li>{itemClass?.name}</li>
+                  <li>
+                    <div className="text-center">{itemClass?.name}</div>
+                  </li>
                 </>
               )}
               <li className="!mb-[-8px] !mt-6 flex items-center">
@@ -336,7 +340,7 @@ const Profile: FC<Props> = ({ showData }) => {
                 </svg>
               </li>
               <li>
-                <span>{user?.email}</span>
+                <div className="text-center">{user?.email}</div>
               </li>
             </ul>
           </div>

@@ -223,13 +223,13 @@ const ProfileDash: FC<Props> = ({ showData }) => {
                   {showData?.subject?.length === 0 ? (
                     <span className="text-[14px] text-white-dark">There are not subject</span>
                   ) : (
-                    <>
+                    <div className="flex flex-wrap justify-center">
                       {showData?.subject?.map((subject: any) => (
                         <span key={subject.id} className="badge m-1 whitespace-nowrap bg-info">
                           {subject.name}
                         </span>
                       ))}
-                    </>
+                    </div>
                   )}
                 </li>
                 <li className="!mb-[-8px] !mt-6 flex items-center">
@@ -248,13 +248,13 @@ const ProfileDash: FC<Props> = ({ showData }) => {
                   {showData?.classes?.length === 0 ? (
                     <span className="text-[14px] text-white-dark">There are not classes</span>
                   ) : (
-                    <>
+                    <div className="flex flex-wrap justify-center">
                       {showData?.classes?.map((classes: any) => (
                         <span key={classes.id} className="badge badge-outline-info m-1 whitespace-nowrap">
                           {classes.name}
                         </span>
                       ))}
-                    </>
+                    </div>
                   )}
                 </li>
               </>

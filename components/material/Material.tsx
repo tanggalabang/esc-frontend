@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 import HTMLReactParser from 'html-react-parser';
 import Link from 'next/link';
 import React, { FC, useEffect, useState, Fragment } from 'react';
@@ -88,7 +90,8 @@ const Material: FC<Props> = ({ data, isLoading, refetch }) => {
     direction: 'asc',
   });
   useEffect(() => {
-    setInitialRecords(sortBy(rowData, 'created_at'));
+    const reversedData = sortBy(rowData, 'created_at');
+    setInitialRecords(reversedData.reverse());
   }, [items]);
   useEffect(() => {
     setPage(1);
@@ -199,12 +202,30 @@ const Material: FC<Props> = ({ data, isLoading, refetch }) => {
                         {
                           accessor: 'class_name',
                           title: 'Class',
+                          hidden: user?.user_type === 3,
                           sortable: true,
                         },
                         {
                           accessor: 'subject_name',
                           title: 'Subject',
                           sortable: true,
+                        },
+                        {
+                          accessor: 'created_at',
+                          title: 'Created At',
+                          sortable: true,
+                          render: ({ created_at }) => {
+                            const createdAtDate = new Date(created_at);
+
+                            // Gunakan fungsi format dari date-fns untuk memformat tanggal
+                            const formattedDate = format(createdAtDate, 'yyyy-MM-dd HH:mm:ss');
+
+                            return (
+                              <div>
+                                <p>{formattedDate}</p>
+                              </div>
+                            );
+                          },
                         },
                         {
                           accessor: 'action',

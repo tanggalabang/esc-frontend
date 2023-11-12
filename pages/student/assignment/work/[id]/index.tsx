@@ -257,23 +257,28 @@ const Add = () => {
                 <table className="table-hover text-left">
                   <tr>
                     <th className="py-1 text-white-dark">Name</th>
-                    <td>: {showData?.name}</td>
+                    <td className="pl-2">:</td>
+                    <td className="pl-2">{showData?.name}</td>
                   </tr>
                   <tr>
                     <th className="py-1 text-white-dark">Teacher</th>
-                    <td>: {showData?.autor}</td>
+                    <td className="pl-2">:</td>
+                    <td className="pl-2">{showData?.autor}</td>
                   </tr>
                   <tr>
                     <th className="py-1 text-white-dark">Class</th>
-                    <td>: {showData?.class_name}</td>
+                    <td className="pl-2">:</td>
+                    <td className="pl-2">{showData?.class_name}</td>
                   </tr>
                   <tr>
                     <th className="py-1 text-white-dark">Subject</th>
-                    <td>: {showData?.subject_name}</td>
+                    <td className="pl-2">:</td>
+                    <td className="pl-2">{showData?.subject_name}</td>
                   </tr>
                   <tr>
                     <th className="py-1 text-white-dark">Due Date</th>
-                    <td>: {showData?.due_date}</td>
+                    <td className="pl-2">:</td>
+                    <td className="pl-2">{showData?.due_date}</td>
                   </tr>
                 </table>
               </div>

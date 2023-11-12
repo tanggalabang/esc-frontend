@@ -385,30 +385,66 @@ const TimesTableDash2: FC<Props> = ({ data }) => {
                               )}
                               {user?.user_type === 2 && (
                                 <div className="flex gap-2 py-2">
-                                  <input
-                                    className="form-input cursor-not-allowed disabled:pointer-events-none disabled:bg-[#eee] dark:disabled:bg-[#1b2e4b]"
-                                    disabled
-                                    type="text"
-                                    value={period.number}
-                                  />
-                                  <input
-                                    className="form-input cursor-not-allowed disabled:pointer-events-none disabled:bg-[#eee] dark:disabled:bg-[#1b2e4b]"
-                                    disabled
-                                    type="text"
-                                    value={period.subject}
-                                  />
-                                  <input
-                                    className="form-input cursor-not-allowed disabled:pointer-events-none disabled:bg-[#eee] dark:disabled:bg-[#1b2e4b]"
-                                    disabled
-                                    type="text"
-                                    value={period.teacher}
-                                  />
-                                  <input
-                                    className="form-input cursor-not-allowed disabled:pointer-events-none disabled:bg-[#eee] dark:disabled:bg-[#1b2e4b]"
-                                    disabled
-                                    type="text"
-                                    value={period.place}
-                                  />
+                                  {user?.name === period.teacher ? (
+                                    <input
+                                      className="form-input cursor-not-allowed disabled:pointer-events-none disabled:bg-[#deeffd] dark:disabled:bg-[#1b2e4b]"
+                                      disabled
+                                      type="text"
+                                      value={period.number}
+                                    />
+                                  ) : (
+                                    <input
+                                      className="form-input cursor-not-allowed disabled:pointer-events-none disabled:bg-[#eee] dark:disabled:bg-[#1b2e4b]"
+                                      disabled
+                                      type="text"
+                                      value={period.number}
+                                    />
+                                  )}
+                                  {user?.name === period.teacher ? (
+                                    <input
+                                      className="form-input cursor-not-allowed disabled:pointer-events-none disabled:bg-[#deeffd] dark:disabled:bg-[#1b2e4b]"
+                                      disabled
+                                      type="text"
+                                      value={period.subject}
+                                    />
+                                  ) : (
+                                    <input
+                                      className="form-input cursor-not-allowed disabled:pointer-events-none disabled:bg-[#eee] dark:disabled:bg-[#1b2e4b]"
+                                      disabled
+                                      type="text"
+                                      value={period.subject}
+                                    />
+                                  )}
+                                  {user?.name === period.teacher ? (
+                                    <input
+                                      className="form-input cursor-not-allowed disabled:pointer-events-none disabled:bg-[#deeffd] dark:disabled:bg-[#1b2e4b]"
+                                      disabled
+                                      type="text"
+                                      value={period.teacher}
+                                    />
+                                  ) : (
+                                    <input
+                                      className="form-input cursor-not-allowed disabled:pointer-events-none disabled:bg-[#eee] dark:disabled:bg-[#1b2e4b]"
+                                      disabled
+                                      type="text"
+                                      value={period.teacher}
+                                    />
+                                  )}
+                                  {user?.name === period.teacher ? (
+                                    <input
+                                      className="form-input cursor-not-allowed disabled:pointer-events-none disabled:bg-[#deeffd] dark:disabled:bg-[#1b2e4b]"
+                                      disabled
+                                      type="text"
+                                      value={period.place}
+                                    />
+                                  ) : (
+                                    <input
+                                      className="form-input cursor-not-allowed disabled:pointer-events-none disabled:bg-[#eee] dark:disabled:bg-[#1b2e4b]"
+                                      disabled
+                                      type="text"
+                                      value={period.place}
+                                    />
+                                  )}
                                 </div>
                               )}
                             </div>

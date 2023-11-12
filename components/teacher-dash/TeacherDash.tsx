@@ -534,6 +534,7 @@ const TeacherDash = (props: Props) => {
                     accessor: 'subject',
                     sortable: false,
                     title: 'Subjects',
+                    noWrap: true,
                     render: ({ subject }) => (
                       <ul>
                         {subject?.length === 0 ? (
@@ -554,6 +555,7 @@ const TeacherDash = (props: Props) => {
                     accessor: 'class',
                     sortable: false,
                     title: 'Class',
+                    noWrap: true,
                     render: ({ classes }) => (
                       <ul>
                         {classes?.length === 0 ? (
