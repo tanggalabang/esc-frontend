@@ -89,7 +89,7 @@ const ClassDash = (props: Props) => {
   useEffect(() => {
     refetch();
     if (successAdd) {
-      toast.success('Teacher add successfully');
+      toast.success('Class add successfully');
       setItemsAdd([{ name: '' }]);
     }
   }, [successAdd]);
@@ -179,7 +179,7 @@ const ClassDash = (props: Props) => {
   useEffect(() => {
     if (isSuccess) {
       refetch();
-      toast.success('Student updated successfully');
+      toast.success('Class updated successfully');
     }
   }, [isSuccess]);
   const [courseId, setCourseId] = useState('');

@@ -172,7 +172,7 @@ const Add = () => {
   //USE EFFECT
   useEffect(() => {
     if (successAs && isSuccess) {
-      toast.success('Student add with excel successfully');
+      toast.success('Work sendded successfully');
       // refetch();
       router.reload();
     }

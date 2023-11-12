@@ -121,7 +121,7 @@ const Add = () => {
   const router = useRouter();
   useEffect(() => {
     if (successAs && isSuccess) {
-      toast.success('Student add with excel successfully');
+      toast.success('Assignment add successfully');
       router.push('/teacher/assignment');
     }
   }, [successAs, isSuccess]);

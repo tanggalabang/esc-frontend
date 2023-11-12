@@ -94,7 +94,7 @@ const Profile: FC<Props> = ({ showData }) => {
   //--toast useEffet update
   useEffect(() => {
     if (successUpdate) {
-      toast.success('Student add successfully');
+      toast.success('Profile updated successfully');
     }
   }, [successUpdate]);
   ///EDIT UPDATE PROFILE

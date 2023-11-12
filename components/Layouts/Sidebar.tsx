@@ -553,7 +553,7 @@ const Sidebar = () => {
               <br />
               <br />
               <br />
-              <li className="menu nav-item">
+              {/* <li className="menu nav-item">
                 <button type="button" className={`${currentMenu === 'dashboard' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('dashboard')}>
                   <div className="flex items-center">
                     <svg className="group-hover:!text-primary" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1510,7 +1510,7 @@ const Sidebar = () => {
                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('documentation')}</span>
                   </div>
                 </button>
-              </li>
+              </li> */}
             </ul>
           </PerfectScrollbar>
         </div>

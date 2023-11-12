@@ -83,7 +83,7 @@ const index = (props: Props) => {
   useEffect(() => {
     if (successExcel) {
       refetch();
-      toast.success('Student add with excel successfully');
+      toast.success('Teacher add with excel successfully');
     }
     if (error) {
       refetch();
@@ -167,7 +167,7 @@ const index = (props: Props) => {
   useEffect(() => {
     if (isSuccess) {
       refetch();
-      toast.success('Student updated successfully');
+      toast.success('Teacher updated successfully');
     }
   }, [isSuccess]);
   ///EDIT

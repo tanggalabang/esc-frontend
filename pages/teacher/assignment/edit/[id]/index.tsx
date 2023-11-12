@@ -151,7 +151,7 @@ const Edit = () => {
 
   useEffect(() => {
     if (successAs && isSuccess) {
-      toast.success('Student add with excel successfully');
+      toast.success('Assignment updated successfully');
       router.push('/teacher/assignment');
     }
   }, [successAs, isSuccess]);
