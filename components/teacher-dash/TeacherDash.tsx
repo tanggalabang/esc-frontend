@@ -515,6 +515,7 @@ const TeacherDash = (props: Props) => {
                   {
                     accessor: 'name',
                     sortable: true,
+                    noWrap: true,
                     render: ({ name, profile_pic }) => (
                       <div className="flex items-center font-semibold">
                         <div className="w-max rounded-full bg-white-dark/30 p-0.5 ltr:mr-2 rtl:ml-2">
@@ -642,7 +643,6 @@ const TeacherDash = (props: Props) => {
                 sortStatus={sortStatus}
                 onSortStatusChange={setSortStatus}
                 minHeight={200}
-                paginationText={({ from, to, totalRecords }) => `Showing  ${from} to ${to} of ${totalRecords} entries`}
               />
             </div>
 

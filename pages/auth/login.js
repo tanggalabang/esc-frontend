@@ -93,11 +93,11 @@ const Login = () => {
           </div>
           <div className="relative flex w-full items-center xl:bg-gradient-to-t xl:from-[#ffffff] xl:to-[#ffffff] bg-gradient-to-t from-[#ff1361bf] to-[#44107A] justify-center lg:w-1/2">
             <div className="w-[480px] xl:block hidden p-5 md:p-10 mx-6">
-              <div className='flex justify-center'>
-                <img className="inline-block ml-[-20px] w-16 flex-none" src="/assets/images/logo-esc.png" alt="logo" />
-                <h2 className="mt-4 text-3xl font-bold">Sign In</h2>
+              <div className='flex justify-center mb-2'>
+                <img className="inline-block ml-[-20px] w-12 flex-none" src="/assets/images/logo-esc.png" alt="logo" />
+                <h2 className="mt-2 text-3xl font-bold">Sign In</h2>
               </div>
-              <p className="mb-8 text-center">Enter your email and password to login</p>
+              <p className="mb-10 text-center">Enter your email and password to login</p>
               <form onSubmit={submitForm}>
                 {/* Email Address */}
                 <div>

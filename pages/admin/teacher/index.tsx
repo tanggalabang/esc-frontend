@@ -338,14 +338,14 @@ const index = (props: Props) => {
   const PAGE_SIZES = [10, 20, 30, 50, 100];
   const [search, setSearch] = useState('');
   const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
-  const [initialRecords, setInitialRecords] = useState(sortBy(rowData, 'id'));
+  const [initialRecords, setInitialRecords] = useState(sortBy(rowData, 'name'));
   const [recordsData, setRecordsData] = useState(initialRecords);
   const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({
-    columnAccessor: 'id',
+    columnAccessor: 'name',
     direction: 'asc',
   });
   useEffect(() => {
-    setInitialRecords(sortBy(rowData, 'id'));
+    setInitialRecords(sortBy(rowData, 'name'));
   }, [items]);
   useEffect(() => {
     setPage(1);
@@ -579,6 +579,7 @@ const index = (props: Props) => {
                   {
                     accessor: 'name',
                     sortable: true,
+                    noWrap: true,
                     render: ({ name, profile_pic }) => (
                       <div className="flex items-center font-semibold">
                         <div className="w-max rounded-full bg-white-dark/30 p-0.5 ltr:mr-2 rtl:ml-2">
